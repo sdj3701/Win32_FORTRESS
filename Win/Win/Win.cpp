@@ -133,6 +133,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     //선언을 전역 변수로 선언을 해서 값을 계속 가지고 있음
     RECT rectView;
     Vector2& playerPos = game->GetplayerPos();
+    Vector2& BMPos = game->GetBMPos();
+    double& vec = game->GetAngle();
     //주소로 보내지 않으면 값을 변경하지 못함
 
     //캐릭터는 하나 생성하는 클래스 구현S
@@ -169,6 +171,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             playerPos.x += 5;
             game->SetplayerPos(playerPos);
+            InvalidateRect(hWnd, NULL, FALSE);
+        }
+        if (wParam == 'W' || wParam == 'w')
+        {
+            if (vec == 45)  return vec;
+            else    vec += 1;
+            game->SetAngle(vec);
+            InvalidateRect(hWnd, NULL, FALSE);
+        }
+        if (wParam == 'S' || wParam == 's')
+        {
+            if (vec == 20)  return vec;
+            else    vec -= 1;
+            game->SetAngle(vec);
+            InvalidateRect(hWnd, NULL, FALSE);
+        }
+
+        if (wParam == VK_SPACE)
+        {
+
             InvalidateRect(hWnd, NULL, FALSE);
         }
         break;

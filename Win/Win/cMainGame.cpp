@@ -121,6 +121,16 @@ RECT cMainGame::GetrectView()
     return rectView;
 }
 
+void cMainGame::SetAngle(double _vec)
+{
+    vec = _vec;
+}
+
+double& cMainGame::GetAngle()
+{
+    return vec;
+}
+
 void cMainGame::DrawBitmapDoubleBuffering(HWND hWNd, HDC hdc,POINT _mousePos)
 {
     HDC DoubleDC;
@@ -182,10 +192,12 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWNd, HDC hdc,POINT _mousePos)
 
 }
 
-void cMainGame::BM(Vector2 v,double t)
+Vector2 cMainGame::BM(Vector2 v,double t)
 {
     const double g = 9.81;
-    v.x = 1 * t * cos(v.Angle(v));
+    double x = 1 * t * BMPos.x;
+    double y = 1 * t * BMPos.y - (0.5 * g * t * t);
+    return Vector2(x, y);
 }
 
 Vector2 cMainGame::SetBMPos(Vector2 _BMPos, double _vec)
@@ -195,7 +207,7 @@ Vector2 cMainGame::SetBMPos(Vector2 _BMPos, double _vec)
     return Vector2(BMPos.x, BMPos.y);
 }
 
-Vector2 cMainGame::GetBMPos()
+Vector2& cMainGame::GetBMPos()
 {
     return BMPos;
 }
