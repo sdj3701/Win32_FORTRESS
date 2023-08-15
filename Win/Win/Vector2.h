@@ -24,6 +24,7 @@ public:
 	Vector2 Cross(Vector2& v1);
 	double Angle(Vector2& v1);
 
+
 	friend Vector2 operator* (double n, const Vector2& vec);
 	friend std::ostream& operator<<(std::ostream& os, const Vector2& v);
 

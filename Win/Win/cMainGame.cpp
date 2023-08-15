@@ -182,4 +182,32 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWNd, HDC hdc,POINT _mousePos)
 
 }
 
+void cMainGame::BM(Vector2 v,double t)
+{
+    const double g = 9.81;
+    v.x = 1 * t * cos(v.Angle(v));
+}
 
+Vector2 cMainGame::SetBMPos(Vector2 _BMPos, double _vec)
+{
+    BMPos.x = cos(AngleInRadians(_vec));
+    BMPos.y = sin(AngleInRadians(_vec));
+    return Vector2(BMPos.x, BMPos.y);
+}
+
+Vector2 cMainGame::GetBMPos()
+{
+    return BMPos;
+}
+
+double cMainGame::AngleInRadians(double angle)
+{
+    vec = (angle * 3.141592) / 180.0;
+    return vec;
+}
+
+Vector2 cMainGame::launchPos(Vector2 _playerPos, Vector2 _BMPos)
+{
+    Vector2 launch(_playerPos.x + _BMPos.x, _playerPos.y + _BMPos.y);
+    return launch;
+}

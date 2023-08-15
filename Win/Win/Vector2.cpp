@@ -99,6 +99,8 @@ double Vector2::Angle(Vector2& v1)
     return acos(Dot(v1)/(v2*v3))*(180/3.14);
 }
 
+
+
 Vector2 operator*(double n, const Vector2& vec)
 {
     Vector2 v1;
