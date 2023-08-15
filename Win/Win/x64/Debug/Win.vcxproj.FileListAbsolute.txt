@@ -1,0 +1,2 @@
+C:\Users\ShinDongJu\Documents\GitHub\Win\Win\x64\Debug\Win.exe
+C:\work\Win\Win\x64\Debug\Win.exe
