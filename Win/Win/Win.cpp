@@ -141,6 +141,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     double& t = game->GetTime();
     //시간을 점차 줄여야 함
 
+    static DWORD startTime = 0;
+    static double powerGauge = game->GetpowerGauge();
+
     //캐릭터는 하나 생성하는 클래스 구현S
     switch (message)
     {
@@ -179,14 +182,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         if (wParam == 'W' || wParam == 'w')
         {
-            if (vec == 45)  return vec;
+            if (vec == 55)  return vec;
             else    vec += 1;
             game->SetAngle(vec);
             InvalidateRect(hWnd, NULL, FALSE);
         }
         if (wParam == 'S' || wParam == 's')
         {
-            if (vec == 20)  return vec;
+            if (vec == 10)  return vec;
             else    vec -= 1;
             game->SetAngle(vec);
             InvalidateRect(hWnd, NULL, FALSE);
@@ -194,6 +197,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         if (wParam == VK_SPACE)
         {
+            startTime = GetTickCount();
+            //스페이스바를 사용했을 때 시간 측정
+            InvalidateRect(hWnd, NULL, FALSE);
+        }
+        break;
+
+    case WM_KEYUP:
+        if (wParam == VK_SPACE)
+        {
+            DWORD endTime = GetTickCount();
+            //끝나는 시간 측정
+            DWORD elapsedTime = endTime - startTime;
+            //시간 누르는 시간 체크
+            powerGauge += elapsedTime;
+            game->SetpowerGauge(powerGauge);
             game->SetBMPos(vec);
             isFired = true;
             game->SetFire(isFired);

@@ -17,6 +17,9 @@ cMainGame::cMainGame()
     hBMImage;
     bitBM;
     //BM
+    hUIImage;
+    bitUI;
+    //UI
     hDoubleBufferImage;
     rectView;
 
@@ -94,6 +97,18 @@ void cMainGame::CreateBitmap()
         GetObject(hBMImage, sizeof(BITMAP), &bitBM);
     }
     //BM
+    {
+        hUIImage = (HBITMAP)LoadImage(NULL, TEXT("image/play__0001.bmp"),
+            IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+        if (hUIImage == NULL)
+        {
+            DWORD dwError = GetLastError();
+            MessageBox(NULL, _T("image load ui error"), _T("error"), MB_OK);
+            return;
+        }
+        GetObject(hUIImage, sizeof(BITMAP), &bitUI);
+    }
+    //UI
 }
 
 void cMainGame::DeleteBitmap()
@@ -102,6 +117,7 @@ void cMainGame::DeleteBitmap()
     DeleteObject(hTransparentImage);
     DeleteObject(hcharImage);
     DeleteObject(hBMImage);
+    DeleteObject(hUIImage);
 }
 
 void cMainGame::Player(HDC hdc)
@@ -115,8 +131,8 @@ void cMainGame::Player(HDC hdc)
     }
 }
 
-HDC hMemDC, hMemDC1, hMemDC2, hMemDC3;
-HBITMAP hOldBitmap, hOldBitmap1, hOldBitmap2, hOldBitmap3;
+HDC hMemDC, hMemDC1, hMemDC2, hMemDC3, hMemDC4;
+HBITMAP hOldBitmap, hOldBitmap1, hOldBitmap2, hOldBitmap3, hOldBitmap4;
 void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc, Vector2 _mousePos)
 {
     HDC DoubleDC;
@@ -169,13 +185,23 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc, Vector2 _mousePos)
             hMemDC3 = CreateCompatibleDC(DoubleDC);
             hOldBitmap3 = (HBITMAP)SelectObject(hMemDC3, hBMImage);
 
-            BM(hWnd, hMemDC3, BMPos, t);
-            Vector2 result = BM(hWnd, hMemDC3, BMPos, t);
+            BM(hWnd, hMemDC3, BMPos, t, powerGauge);
+            Vector2 result = BM(hWnd, hMemDC3, BMPos, t, powerGauge);
             bx = bitBM.bmWidth;
             by = bitBM.bmHeight;
 
             TransparentBlt(DoubleDC, result.x, result.y+100, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
             DeleteDC(hMemDC3);
+        }
+        {
+            hMemDC4 = CreateCompatibleDC(DoubleDC);
+            hOldBitmap4 = (HBITMAP)SelectObject(hMemDC4, hUIImage);
+
+            bx = bitUI.bmWidth;
+            by = bitUI.bmHeight;
+
+            TransparentBlt(DoubleDC, 0, rectView.bottom-159, bx, by, hMemDC4, 0, 0, bx, by, RGB(47, 75, 63));
+            DeleteDC(hMemDC4);
         }
 
         Player(hMemDC1);
@@ -189,10 +215,10 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc, Vector2 _mousePos)
 
 }
 
-Vector2 cMainGame::BM(HWND hWnd,HDC hdc,Vector2 v,double t)
+Vector2 cMainGame::BM(HWND hWnd,HDC hdc,Vector2 v,double t,double _powerGauge)
 {
-    double x = 50 * t * v.x;
-    double y = 50 * t * v.y - (0.5 * g * t * t);
+    double x = (1 * _powerGauge) * t * v.x;
+    double y = (1 * _powerGauge) * t * v.y - (0.5 * g * t * t);
     
     Draw(hWnd, hdc, Vector2(x + playerPos.x, -(y)+(playerPos.y)));
      
@@ -203,7 +229,6 @@ Vector2 cMainGame::SetBMPos(double _vec)
 {
     BMPos.x = cos(AngleInRadians(_vec));
     BMPos.y = sin(AngleInRadians(_vec));
-
 
     return Vector2(BMPos.x, BMPos.y);
 }
@@ -235,12 +260,12 @@ void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _mousePos) // 그리기
         Boom(hMemDC1, _mousePos);
         isFired = false;
         t = 0;
+        powerGauge = 0;
     }
     SelectObject(hdc, oldPen);
     DeleteObject(hPen);
     SelectObject(hdc, oldBrush);
     DeleteObject(hBrush);
-    
 }
 
 void cMainGame::SetplayerPos(Vector2 _playerPos)
@@ -292,5 +317,17 @@ void cMainGame::SetFire(bool _isFired)
 bool& cMainGame::GetFire()
 {
     return isFired;
+    // TODO: 여기에 return 문을 삽입합니다.
+}
+
+void cMainGame::SetpowerGauge(double _powerGauge)
+{
+    powerGauge = _powerGauge;
+}
+
+double& cMainGame::GetpowerGauge()
+{
+
+    return powerGauge;
     // TODO: 여기에 return 문을 삽입합니다.
 }
