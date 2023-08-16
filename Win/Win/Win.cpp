@@ -216,6 +216,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             isFired = true;
             game->SetFire(isFired);
             InvalidateRect(hWnd, NULL, FALSE);
+            startTime = 0, endTime = 0;
         }
         break;
 

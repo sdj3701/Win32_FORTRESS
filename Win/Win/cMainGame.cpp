@@ -185,8 +185,8 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc, Vector2 _mousePos)
             hMemDC3 = CreateCompatibleDC(DoubleDC);
             hOldBitmap3 = (HBITMAP)SelectObject(hMemDC3, hBMImage);
 
-            BM(hWnd, hMemDC3, BMPos, t, powerGauge);
-            Vector2 result = BM(hWnd, hMemDC3, BMPos, t, powerGauge);
+            //BM(hWnd, hMemDC3, BMPos, t, GetpowerGauge());
+            Vector2 result = BM(hWnd, hMemDC3, BMPos, t, GetpowerGauge());
             bx = bitBM.bmWidth;
             by = bitBM.bmHeight;
 
@@ -217,8 +217,8 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc, Vector2 _mousePos)
 
 Vector2 cMainGame::BM(HWND hWnd,HDC hdc,Vector2 v,double t,double _powerGauge)
 {
-    double x = (1 * _powerGauge) * t * v.x;
-    double y = (1 * _powerGauge) * t * v.y - (0.5 * g * t * t);
+    double x =  (_powerGauge) * t * v.x;
+    double y =  (_powerGauge) * t * v.y - (0.5 * g * t * t);
     
     Draw(hWnd, hdc, Vector2(x + playerPos.x, -(y)+(playerPos.y)));
      
@@ -260,7 +260,7 @@ void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _mousePos) // 그리기
         Boom(hMemDC1, _mousePos);
         isFired = false;
         t = 0;
-        powerGauge = 0;
+        SetpowerGauge(0);
     }
     SelectObject(hdc, oldPen);
     DeleteObject(hPen);
