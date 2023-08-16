@@ -194,7 +194,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         if (wParam == VK_SPACE)
         {
-            game->SetBMPos(BMPos, vec);
+            game->SetBMPos(vec);
             isFired = true;
             game->SetFire(isFired);
             InvalidateRect(hWnd, NULL, FALSE);

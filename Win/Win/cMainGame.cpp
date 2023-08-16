@@ -165,6 +165,7 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc, Vector2 _mousePos)
         }
         if (isFired)
         {
+
             hMemDC3 = CreateCompatibleDC(DoubleDC);
             hOldBitmap3 = (HBITMAP)SelectObject(hMemDC3, hBMImage);
 
@@ -194,14 +195,16 @@ Vector2 cMainGame::BM(HWND hWnd,HDC hdc,Vector2 v,double t)
     double y = 50 * t * v.y - (0.5 * g * t * t);
     
     Draw(hWnd, hdc, Vector2(x + playerPos.x, -(y)+(playerPos.y)));
-
+     
     return Vector2(x + playerPos.x, -(y)+(playerPos.y));
 }
 
-Vector2 cMainGame::SetBMPos(Vector2 _BMPos, double _vec)
+Vector2 cMainGame::SetBMPos(double _vec)
 {
     BMPos.x = cos(AngleInRadians(_vec));
     BMPos.y = sin(AngleInRadians(_vec));
+
+
     return Vector2(BMPos.x, BMPos.y);
 }
 
@@ -212,13 +215,12 @@ Vector2& cMainGame::GetBMPos()
 
 double cMainGame::AngleInRadians(double angle)
 {
-    vec = (angle * 3.141592) / 180.0;
-    return vec;
+    revec = (angle * 3.141592) / 180.0;
+    return revec;
 }
 
-void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _mousePos)
+void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _mousePos) // 그리기
 {
-    //_mousePos.y += 100;
     hBrush = CreateSolidBrush(RGB(47, 75, 63));
     oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
     hPen = CreatePen(PS_SOLID, 1, RGB(47, 75, 63));
@@ -230,7 +232,6 @@ void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _mousePos)
     COLORREF flyColor = RGB(47, 75, 63);
     if (pixelColor != flyColor)
     {
-        //_mousePos.y -= 100;
         Boom(hMemDC1, _mousePos);
         isFired = false;
         t = 0;
