@@ -169,11 +169,11 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc, Vector2 _mousePos)
             hOldBitmap3 = (HBITMAP)SelectObject(hMemDC3, hBMImage);
 
             BM(hWnd, hMemDC3, BMPos, t);
-
+            Vector2 result = BM(hWnd, hMemDC3, BMPos, t);
             bx = bitBM.bmWidth;
             by = bitBM.bmHeight;
 
-            TransparentBlt(DoubleDC, 0, 100, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
+            TransparentBlt(DoubleDC, result.x, result.y+100, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
             DeleteDC(hMemDC3);
         }
 
@@ -195,7 +195,7 @@ Vector2 cMainGame::BM(HWND hWnd,HDC hdc,Vector2 v,double t)
     
     Draw(hWnd, hdc, Vector2(x + playerPos.x, -(y)+(playerPos.y)));
 
-    return Vector2(x, y);
+    return Vector2(x + playerPos.x, -(y)+(playerPos.y));
 }
 
 Vector2 cMainGame::SetBMPos(Vector2 _BMPos, double _vec)
@@ -224,9 +224,9 @@ void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _mousePos)
     hPen = CreatePen(PS_SOLID, 1, RGB(47, 75, 63));
     oldPen = (HPEN)SelectObject(hdc, hPen);
     
-    Ellipse(hdc, _mousePos.x - 20, _mousePos.y - 20, _mousePos.x + 20, _mousePos.y + 20);
+    Ellipse(hdc, _mousePos.x - 10, _mousePos.y - 10, _mousePos.x + 10, _mousePos.y + 10);
 
-    COLORREF pixelColor = GetPixel(hdc, _mousePos.x, _mousePos.y + 20);
+    COLORREF pixelColor = GetPixel(hMemDC1, _mousePos.x, _mousePos.y + 10);
     COLORREF flyColor = RGB(47, 75, 63);
     if (pixelColor != flyColor)
     {

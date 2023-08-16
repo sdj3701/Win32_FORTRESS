@@ -7,10 +7,12 @@ C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(109,66
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(109,50): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(163,63): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(163,47): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(176,56): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(176,44): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(227,84): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(227,66): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(227,48): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(227,30): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(229,66): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(229,50): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(229,70): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(229,54): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   Win.vcxproj -> C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Debug\Win.exe
