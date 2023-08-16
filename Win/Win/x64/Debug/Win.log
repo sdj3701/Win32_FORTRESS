@@ -1,4 +1,14 @@
 ﻿  Win.cpp
-C:\work\Win32_FORTRESS\Win\Win\Win.cpp(178,36): warning C4244: 'return': 'double'에서 'LRESULT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\work\Win32_FORTRESS\Win\Win\Win.cpp(185,36): warning C4244: 'return': 'double'에서 'LRESULT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Win.vcxproj -> C:\work\Win32_FORTRESS\Win\x64\Debug\Win.exe
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\Win.cpp(182,36): warning C4244: 'return': 'double'에서 'LRESULT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\Win.cpp(189,36): warning C4244: 'return': 'double'에서 'LRESULT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  cMainGame.cpp
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(33,84): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(33,66): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(33,48): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(33,30): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(91,66): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(91,50): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(182,63): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(182,47): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+  Win.vcxproj -> C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\x64\Debug\Win.exe

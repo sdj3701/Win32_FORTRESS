@@ -23,13 +23,14 @@ cMainGame::~cMainGame()
     
 }
 
-void cMainGame::Boom(HDC hdc, POINT _mousePos)
+void cMainGame::Boom(HDC hdc, Vector2 _mousePos)
 {
     hBrush = CreateSolidBrush(RGB(47, 75, 63));
     oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
     hPen = CreatePen(PS_SOLID, 1, RGB(47, 75, 63));
     oldPen = (HPEN)SelectObject(hdc, hPen);
-    Ellipse(hdc, _mousePos.x - 50, _mousePos.y - 50, _mousePos.x + 50, _mousePos.y + 50);
+    Ellipse(hdc, _mousePos.x - 20, _mousePos.y - 20, _mousePos.x + 20, _mousePos.y + 20);
+    //if()
     SelectObject(hdc, oldPen);
     DeleteObject(hPen);
     SelectObject(hdc, oldBrush);
@@ -131,7 +132,7 @@ double& cMainGame::GetAngle()
     return vec;
 }
 
-void cMainGame::DrawBitmapDoubleBuffering(HWND hWNd, HDC hdc,POINT _mousePos)
+void cMainGame::DrawBitmapDoubleBuffering(HWND hWNd, HDC hdc, Vector2 _mousePos)
 {
     HDC DoubleDC;
     HBITMAP hOldDoubleBitmap;
@@ -192,11 +193,13 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWNd, HDC hdc,POINT _mousePos)
 
 }
 
-Vector2 cMainGame::BM(Vector2 v,double t)
+Vector2 cMainGame::BM(HDC hdc,Vector2 v,double t)
 {
-    const double g = 9.81;
-    double x = 1 * t * BMPos.x;
-    double y = 1 * t * BMPos.y - (0.5 * g * t * t);
+    double x = 50 * t * v.x;
+    double y = 50 * t * v.y - (0.5 * g * t * t);
+    
+    Boom(hdc, Vector2(x+playerPos.x,-(y)+ (playerPos.y+100)));
+
     return Vector2(x, y);
 }
 
@@ -216,10 +219,4 @@ double cMainGame::AngleInRadians(double angle)
 {
     vec = (angle * 3.141592) / 180.0;
     return vec;
-}
-
-Vector2 cMainGame::launchPos(Vector2 _playerPos, Vector2 _BMPos)
-{
-    Vector2 launch(_playerPos.x + _BMPos.x, _playerPos.y + _BMPos.y);
-    return launch;
 }

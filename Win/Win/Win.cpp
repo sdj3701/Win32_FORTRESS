@@ -129,13 +129,17 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static cMainGame* game = new cMainGame();
-    static POINT mousePos;
+    static Vector2 mousePos;
     //선언을 전역 변수로 선언을 해서 값을 계속 가지고 있음
     RECT rectView;
     Vector2& playerPos = game->GetplayerPos();
     Vector2& BMPos = game->GetBMPos();
     double& vec = game->GetAngle();
     //주소로 보내지 않으면 값을 변경하지 못함
+
+    static bool isFired = false;
+    static double t=0;
+    //시간을 점차 줄여야 함
 
     //캐릭터는 하나 생성하는 클래스 구현S
     switch (message)
@@ -144,7 +148,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         GetClientRect(hWnd,&rectView);
         game->SetrectView(rectView);
-        SetTimer(hWnd, TIMER_1, 30, NULL);
+        SetTimer(hWnd, TIMER_1, 60, NULL);
         game->CreateBitmap();
         //비트맵 처음 생성
     }
@@ -190,7 +194,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         if (wParam == VK_SPACE)
         {
-
+            game->SetBMPos(BMPos, vec);
+            isFired = true;
             InvalidateRect(hWnd, NULL, FALSE);
         }
         break;
@@ -227,6 +232,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             
             game->DrawBitmapDoubleBuffering(hWnd, hdc, mousePos);
             //비트맵 그려주기
+            
+            if (isFired) 
+            {
+                game->BM(hdc, BMPos, t);
+                (t += 0.1);
+            }
+            
+            
             // 데미지가 있을 때에만 맵을 다시 그려야 함
             EndPaint(hWnd, &ps);
         }
