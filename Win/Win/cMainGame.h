@@ -17,15 +17,22 @@ private:
 	HBITMAP hcharImage;
 	BITMAP bitChar;
 	//char
+	HBITMAP hBMImage;
+	BITMAP bitBM;
+	//BM
+
 	HBITMAP hDoubleBufferImage;
 	HDC m_MemDC;
+	
 	RECT rectView;
 
 	Vector2 playerPos = { 150,50 };
 	Vector2 BMPos = { 0,0 };
 
 	double vec = {35.0};
+	double t = 0;
 	const double g = 9.81;
+	bool isFired = false;
 
 public:
 	cMainGame();
@@ -47,10 +54,16 @@ public:
 	void SetAngle(double _vec);
 	double& GetAngle();
 
-	Vector2 BM(HDC hdc, Vector2 v, double t);//계산된 탄 포물선 방적식을 계산해서 발사하는 함수
+	void SetTime(double _t);
+	double& GetTime();
+
+	void SetFire(bool _isFired);
+	bool& GetFire();
+
+	Vector2 BM(HWND hWnd, HDC hdc, Vector2 v, double t);//계산된 탄 포물선 방적식을 계산해서 발사하는 함수
 	Vector2 SetBMPos(Vector2 _BMPos,double _vec); //(BMPos를 각도에 따라 계산 하기 위한 함수)
 	Vector2& GetBMPos(); // 저장한 함수 사용하기
 	double AngleInRadians(double angle);//각도에 따른 라디안 계산
-
+	void Draw(HWND hWnd,HDC hdc, Vector2 _mousePos);
 };
 

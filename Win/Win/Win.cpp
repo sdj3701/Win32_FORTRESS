@@ -137,8 +137,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     double& vec = game->GetAngle();
     //주소로 보내지 않으면 값을 변경하지 못함
 
-    static bool isFired = false;
-    static double t=0;
+    bool& isFired = game->GetFire();
+    double& t = game->GetTime();
     //시간을 점차 줄여야 함
 
     //캐릭터는 하나 생성하는 클래스 구현S
@@ -148,7 +148,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         GetClientRect(hWnd,&rectView);
         game->SetrectView(rectView);
-        SetTimer(hWnd, TIMER_1, 60, NULL);
+        SetTimer(hWnd, TIMER_1, 30, NULL);
         game->CreateBitmap();
         //비트맵 처음 생성
     }
@@ -196,6 +196,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             game->SetBMPos(BMPos, vec);
             isFired = true;
+            game->SetFire(isFired);
             InvalidateRect(hWnd, NULL, FALSE);
         }
         break;
@@ -233,11 +234,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             game->DrawBitmapDoubleBuffering(hWnd, hdc, mousePos);
             //비트맵 그려주기
             
-            if (isFired) 
-            {
-                game->BM(hdc, BMPos, t);
-                (t += 0.1);
-            }
+            if (isFired)    t += 0.1;
             
             
             // 데미지가 있을 때에만 맵을 다시 그려야 함

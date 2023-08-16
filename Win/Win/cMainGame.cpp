@@ -13,6 +13,10 @@ cMainGame::cMainGame()
     //map
     hcharImage;
     bitChar;
+    //char
+    hBMImage;
+    bitBM;
+    //BM
     hDoubleBufferImage;
     rectView;
 
@@ -29,8 +33,9 @@ void cMainGame::Boom(HDC hdc, Vector2 _mousePos)
     oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
     hPen = CreatePen(PS_SOLID, 1, RGB(47, 75, 63));
     oldPen = (HPEN)SelectObject(hdc, hPen);
-    Ellipse(hdc, _mousePos.x - 20, _mousePos.y - 20, _mousePos.x + 20, _mousePos.y + 20);
-    //if()
+
+    Ellipse(hdc, (_mousePos.x + 10) - 20, (_mousePos.y +10)- 20, (_mousePos.x + 10) + 20, (_mousePos.y + 10) + 20);
+    
     SelectObject(hdc, oldPen);
     DeleteObject(hPen);
     SelectObject(hdc, oldBrush);
@@ -77,6 +82,18 @@ void cMainGame::CreateBitmap()
         GetObject(hcharImage, sizeof(BITMAP), &bitChar);
     }
     //char
+    {
+        hBMImage = (HBITMAP)LoadImage(NULL, TEXT("image/bullet06-0004.bmp"),
+            IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+        if (hBMImage == NULL)
+        {
+            DWORD dwError = GetLastError();
+            MessageBox(NULL, _T("image load bullet error"), _T("error"), MB_OK);
+            return;
+        }
+        GetObject(hBMImage, sizeof(BITMAP), &bitBM);
+    }
+    //BM
 }
 
 void cMainGame::DeleteBitmap()
@@ -84,6 +101,7 @@ void cMainGame::DeleteBitmap()
     DeleteObject(hbackImage);
     DeleteObject(hTransparentImage);
     DeleteObject(hcharImage);
+    DeleteObject(hBMImage);
 }
 
 void cMainGame::Player(HDC hdc)
@@ -97,48 +115,13 @@ void cMainGame::Player(HDC hdc)
     }
 }
 
-void cMainGame::SetplayerPos(Vector2 _playerPos)
-{
-    playerPos.x = _playerPos.x;
-    playerPos.y = _playerPos.y;
-}
-
-Vector2& cMainGame::GetplayerPos()
-{
-    return playerPos;
-    // TODO: 여기에 return 문을 삽입합니다.
-}
-
-void cMainGame::SetrectView(RECT _rectView)
-{
-    rectView.bottom = _rectView.bottom;
-    rectView.left = _rectView.left;
-    rectView.right = _rectView.right;
-    rectView.top = _rectView.top;
-}
-
-RECT cMainGame::GetrectView()
-{
-    return rectView;
-}
-
-void cMainGame::SetAngle(double _vec)
-{
-    vec = _vec;
-}
-
-double& cMainGame::GetAngle()
-{
-    return vec;
-}
-
-void cMainGame::DrawBitmapDoubleBuffering(HWND hWNd, HDC hdc, Vector2 _mousePos)
+HDC hMemDC, hMemDC1, hMemDC2, hMemDC3;
+HBITMAP hOldBitmap, hOldBitmap1, hOldBitmap2, hOldBitmap3;
+void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc, Vector2 _mousePos)
 {
     HDC DoubleDC;
     HBITMAP hOldDoubleBitmap;
 
-    HDC hMemDC, hMemDC1, hMemDC2;
-    HBITMAP hOldBitmap, hOldBitmap1, hOldBitmap2;
     int bx, by;
     
     DoubleDC = CreateCompatibleDC(hdc);
@@ -165,8 +148,6 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWNd, HDC hdc, Vector2 _mousePos)
             hMemDC1 = CreateCompatibleDC(DoubleDC);
             hOldBitmap1 = (HBITMAP)SelectObject(hMemDC1, hTransparentImage);
 
-            Boom(hMemDC1, _mousePos);
-
             bx = bitTransparent.bmWidth;
             by = bitTransparent.bmHeight;
 
@@ -182,6 +163,20 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWNd, HDC hdc, Vector2 _mousePos)
             TransparentBlt(DoubleDC, playerPos.x, playerPos.y + 100, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
             DeleteDC(hMemDC2);
         }
+        if (isFired)
+        {
+            hMemDC3 = CreateCompatibleDC(DoubleDC);
+            hOldBitmap3 = (HBITMAP)SelectObject(hMemDC3, hBMImage);
+
+            BM(hWnd, hMemDC3, BMPos, t);
+
+            bx = bitBM.bmWidth;
+            by = bitBM.bmHeight;
+
+            TransparentBlt(DoubleDC, 0, 100, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
+            DeleteDC(hMemDC3);
+        }
+
         Player(hMemDC1);
         DeleteDC(hMemDC1);
     }
@@ -193,12 +188,12 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWNd, HDC hdc, Vector2 _mousePos)
 
 }
 
-Vector2 cMainGame::BM(HDC hdc,Vector2 v,double t)
+Vector2 cMainGame::BM(HWND hWnd,HDC hdc,Vector2 v,double t)
 {
     double x = 50 * t * v.x;
     double y = 50 * t * v.y - (0.5 * g * t * t);
     
-    Boom(hdc, Vector2(x+playerPos.x,-(y)+ (playerPos.y+100)));
+    Draw(hWnd, hdc, Vector2(x + playerPos.x, -(y)+(playerPos.y)));
 
     return Vector2(x, y);
 }
@@ -219,4 +214,82 @@ double cMainGame::AngleInRadians(double angle)
 {
     vec = (angle * 3.141592) / 180.0;
     return vec;
+}
+
+void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _mousePos)
+{
+    //_mousePos.y += 100;
+    hBrush = CreateSolidBrush(RGB(47, 75, 63));
+    oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
+    hPen = CreatePen(PS_SOLID, 1, RGB(47, 75, 63));
+    oldPen = (HPEN)SelectObject(hdc, hPen);
+    
+    Ellipse(hdc, _mousePos.x - 20, _mousePos.y - 20, _mousePos.x + 20, _mousePos.y + 20);
+
+    COLORREF pixelColor = GetPixel(hdc, _mousePos.x, _mousePos.y + 20);
+    COLORREF flyColor = RGB(47, 75, 63);
+    if (pixelColor != flyColor)
+    {
+        //_mousePos.y -= 100;
+        Boom(hMemDC1, _mousePos);
+        isFired = false;
+        t = 0;
+    }
+    SelectObject(hdc, oldPen);
+    DeleteObject(hPen);
+    SelectObject(hdc, oldBrush);
+    DeleteObject(hBrush);
+    
+}
+
+void cMainGame::SetplayerPos(Vector2 _playerPos)
+{
+    playerPos.x = _playerPos.x;
+    playerPos.y = _playerPos.y;
+}
+Vector2& cMainGame::GetplayerPos()
+{
+    return playerPos;
+    // TODO: 여기에 return 문을 삽입합니다.
+}
+
+void cMainGame::SetrectView(RECT _rectView)
+{
+    rectView.bottom = _rectView.bottom;
+    rectView.left = _rectView.left;
+    rectView.right = _rectView.right;
+    rectView.top = _rectView.top;
+}
+RECT cMainGame::GetrectView()
+{
+    return rectView;
+}
+
+void cMainGame::SetAngle(double _vec)
+{
+    vec = _vec;
+}
+double& cMainGame::GetAngle()
+{
+    return vec;
+}
+
+void cMainGame::SetTime(double _t)
+{
+    t = _t;
+}
+double& cMainGame::GetTime()
+{
+    return t;
+    // TODO: 여기에 return 문을 삽입합니다.
+}
+
+void cMainGame::SetFire(bool _isFired)
+{
+    isFired = _isFired;
+}
+bool& cMainGame::GetFire()
+{
+    return isFired;
+    // TODO: 여기에 return 문을 삽입합니다.
 }
