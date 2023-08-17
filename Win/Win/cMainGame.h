@@ -32,6 +32,7 @@ private:
 	Vector2 playerPos = { 150,50 };
 	Vector2 BMPos = { 0,0 };
 	Vector2 mapPos = { 0,0 };
+	Vector2 cameraPos = { 0,0 };
 
 	double powerGauge = 0;
 	double vec = {35.0};
@@ -71,6 +72,9 @@ public:
 
 	void SetmapPos(Vector2 _mapPos);
 	Vector2& GetmapPos();
+
+	void SetcameraPos(Vector2 _cameraPos);
+	Vector2& GetcameraPos();
 
 	Vector2 BM(HWND hWnd, HDC hdc, Vector2 v, double t, double _powerGauge);//계산된 탄 포물선 방적식을 계산해서 발사하는 함수
 	Vector2 SetBMPos(double _vec); //(BMPos를 각도에 따라 계산 하기 위한 함수)

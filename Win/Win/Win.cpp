@@ -163,9 +163,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (wParam == TIMER_1)
         {
             playerPos.y += 5;
-            //mapPos.y += 5;
             game->SetplayerPos(playerPos);
-            //game->SetmapPos(mapPos);
             InvalidateRect(hWnd, NULL, FALSE);
         }
     }
