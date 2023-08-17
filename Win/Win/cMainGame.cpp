@@ -217,8 +217,8 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc, Vector2 _mousePos)
 
 Vector2 cMainGame::BM(HWND hWnd,HDC hdc,Vector2 v,double t,double _powerGauge)
 {
-    double x =  (_powerGauge) * t * v.x;
-    double y =  (_powerGauge) * t * v.y - (0.5 * g * t * t);
+    double x =  (_powerGauge/10) * t * v.x;
+    double y =  (_powerGauge/10) * t * v.y - (0.5 * g * t * t);
     
     Draw(hWnd, hdc, Vector2(x + playerPos.x, -(y)+(playerPos.y)));
      
