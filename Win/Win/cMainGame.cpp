@@ -127,13 +127,15 @@ void cMainGame::Player(HDC hdc)
     if (pixelColor != flyColor)
     {
         playerPos.y -= 5;
+        //mapPos.y -= 5;
         SetplayerPos(playerPos);
+        //SetmapPos(mapPos);
     }
 }
 
 HDC hMemDC, hMemDC1, hMemDC2, hMemDC3, hMemDC4;
 HBITMAP hOldBitmap, hOldBitmap1, hOldBitmap2, hOldBitmap3, hOldBitmap4;
-void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc, Vector2 _mousePos)
+void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
 {
     HDC DoubleDC;
     HBITMAP hOldDoubleBitmap;
@@ -155,19 +157,19 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc, Vector2 _mousePos)
             bx = bitBack.bmWidth;
             by = bitBack.bmHeight;
 
-            BitBlt(DoubleDC, 0, 0, bx, by, hMemDC, 0, 0, SRCCOPY);
+            BitBlt(DoubleDC, 0, 0, bx, by, hMemDC, 0 ,0, SRCCOPY);
             SelectObject(hMemDC, hOldBitmap);
             DeleteDC(hMemDC);
         }
         {
-
             hMemDC1 = CreateCompatibleDC(DoubleDC);
             hOldBitmap1 = (HBITMAP)SelectObject(hMemDC1, hTransparentImage);
 
-            bx = bitTransparent.bmWidth;
-            by = bitTransparent.bmHeight;
-
-            TransparentBlt(DoubleDC, 0, 100, bx, by, hMemDC1, 0, 0, bx, by, RGB(47, 75, 63));
+            bx = (bitTransparent.bmWidth - 891) + mapPos.x;
+            by = (bitTransparent.bmHeight - 187) + mapPos.y;
+            //이미지 크기를 전체 크기를 불러오는 것이 아니라 화면 만금의 크기를 가져와야함
+            //645, 484
+            TransparentBlt(DoubleDC, 0, 100, bx-mapPos.x, by-mapPos.y, hMemDC1, 0+mapPos.x, 0+mapPos.y, bx-mapPos.x, by-mapPos.y, RGB(47, 75, 63));
         }
         {
             hMemDC2 = CreateCompatibleDC(DoubleDC);
@@ -185,7 +187,6 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc, Vector2 _mousePos)
             hMemDC3 = CreateCompatibleDC(DoubleDC);
             hOldBitmap3 = (HBITMAP)SelectObject(hMemDC3, hBMImage);
 
-            //BM(hWnd, hMemDC3, BMPos, t, GetpowerGauge());
             Vector2 result = BM(hWnd, hMemDC3, BMPos, t, GetpowerGauge());
             bx = bitBM.bmWidth;
             by = bitBM.bmHeight;
@@ -260,7 +261,6 @@ void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _mousePos) // 그리기
         Boom(hMemDC1, _mousePos);
         isFired = false;
         t = 0;
-        SetpowerGauge(0);
     }
     SelectObject(hdc, oldPen);
     DeleteObject(hPen);
@@ -284,7 +284,7 @@ void cMainGame::SetrectView(RECT _rectView)
     rectView.bottom = _rectView.bottom;
     rectView.left = _rectView.left;
     rectView.right = _rectView.right;
-    rectView.top = _rectView.top;
+    rectView.top = _rectView.top - 100;
 }
 RECT cMainGame::GetrectView()
 {
@@ -329,5 +329,17 @@ double& cMainGame::GetpowerGauge()
 {
 
     return powerGauge;
+    // TODO: 여기에 return 문을 삽입합니다.
+}
+
+void cMainGame::SetmapPos(Vector2 _mapPos)
+{
+    mapPos.x = _mapPos.x;
+    mapPos.y = _mapPos.y;
+}
+
+Vector2& cMainGame::GetmapPos()
+{
+    return mapPos;
     // TODO: 여기에 return 문을 삽입합니다.
 }

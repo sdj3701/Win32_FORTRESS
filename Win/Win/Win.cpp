@@ -100,8 +100,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
-
+      300, 300, 645, 484, nullptr, nullptr, hInstance, nullptr);
+   //645, 484
    if (!hWnd)
    {
       return FALSE;
@@ -130,6 +130,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static cMainGame* game = new cMainGame();
     static Vector2 mousePos;
+    static Vector2 mapPos = game->GetmapPos();
     //선언을 전역 변수로 선언을 해서 값을 계속 가지고 있음
     RECT rectView;
     Vector2& playerPos = game->GetplayerPos();
@@ -162,7 +163,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (wParam == TIMER_1)
         {
             playerPos.y += 5;
+            //mapPos.y += 5;
             game->SetplayerPos(playerPos);
+            //game->SetmapPos(mapPos);
             InvalidateRect(hWnd, NULL, FALSE);
         }
     }
@@ -172,13 +175,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (wParam == 'A' || wParam == 'a')
         {
             playerPos.x -= 5;
+            mapPos.x -= 5;
             game->SetplayerPos(playerPos);
+            game->SetmapPos(mapPos);
             InvalidateRect(hWnd, NULL, FALSE);
         }
         if (wParam == 'D' || wParam == 'd')
         {
             playerPos.x += 5;
+            mapPos.x += 5;
             game->SetplayerPos(playerPos);
+            game->SetmapPos(mapPos);
             InvalidateRect(hWnd, NULL, FALSE);
         }
         if (wParam == 'W' || wParam == 'w')
@@ -216,12 +223,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             DWORD elapsedTime = endTime - startTime;
             //시간 누르는 시간 체크
             powerGauge += elapsedTime;
+            if (powerGauge > 1500)    powerGauge = 1500;
             game->SetpowerGauge(powerGauge);
             game->SetBMPos(vec);
             isFired = true;
             game->SetFire(isFired);
             InvalidateRect(hWnd, NULL, FALSE);
             count = 0;
+            powerGauge = 0;
         }
         break;
 
@@ -255,7 +264,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
             
-            game->DrawBitmapDoubleBuffering(hWnd, hdc, mousePos);
+            game->DrawBitmapDoubleBuffering(hWnd, hdc);
             //비트맵 그려주기
             
             if (isFired)    t += 0.1;
