@@ -157,7 +157,7 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             bx = bitBack.bmWidth;
             by = bitBack.bmHeight;
 
-            BitBlt(DoubleDC, 0, 0, bx, by, hMemDC, cameraPos.x, cameraPos.y, SRCCOPY);
+            BitBlt(DoubleDC, 0, 0, bx, by, hMemDC, 0, 0, SRCCOPY);
             SelectObject(hMemDC, hOldBitmap);
             DeleteDC(hMemDC);
         }
@@ -165,14 +165,18 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             hMemDC1 = CreateCompatibleDC(DoubleDC);
             hOldBitmap1 = (HBITMAP)SelectObject(hMemDC1, hTransparentImage);
 
-            cameraPos.x = (bitTransparent.bmWidth - 891) + mapPos.x;
-            cameraPos.y = (bitTransparent.bmHeight - 187) + mapPos.y;
-            bx = (bitTransparent.bmWidth - 891) + mapPos.x;
-            by = (bitTransparent.bmHeight - 187) + mapPos.y;
+            cameraPos.x = playerPos.x - (645 / 2);
+            cameraPos.y = playerPos.y - (484 / 2);
+            //캐릭터 위치로 중심으로 카메라가 움직였으면
+
+            bx = 645 + mapPos.x;
+            by = 484 + mapPos.y;
             //이미지 크기를 전체 크기를 불러오는 것이 아니라 화면 만금의 크기를 가져와야함
             //645, 484
-            TransparentBlt(DoubleDC, 0, 100, bx - mapPos.x, by - mapPos.y, hMemDC1, 0 + mapPos.x, 0 + mapPos.y, bx - mapPos.x, by - mapPos.y, RGB(47, 75, 63));
+            TransparentBlt(DoubleDC, 0, 100, bx - mapPos.x, by - mapPos.y, hMemDC1, 0, 0, bx - mapPos.x, by - mapPos.y, RGB(47, 75, 63));
             //xy위치를 땡겨 와야 한다.
+            //mapPos 처음 실행 될때는 0,0이다
+            //playerPos 150,50
         }
         {
             hMemDC2 = CreateCompatibleDC(DoubleDC);
