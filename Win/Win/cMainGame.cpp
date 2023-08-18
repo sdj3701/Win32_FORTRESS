@@ -122,14 +122,17 @@ void cMainGame::DeleteBitmap()
 
 void cMainGame::Player(HDC hdc)
 {
-    COLORREF pixelColor = GetPixel(hdc, playerPos.x, playerPos.y + 34);
+    COLORREF pixelColor = GetPixel(hdc, playerPos.x, playerPos.y);
     COLORREF flyColor = RGB(47, 75, 63);
     if (pixelColor != flyColor)
     {
         playerPos.y -= 5;
-        //mapPos.y -= 5;
         SetplayerPos(playerPos);
-        //SetmapPos(mapPos);
+        if (playerPos.y - rectView.bottom / 2 < 0)
+        {
+            post -= 5;
+            SetposT(post);
+        }
     }
 }
 
@@ -141,7 +144,10 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
     HBITMAP hOldDoubleBitmap;
 
     int bx, by;
+    static int posr = 0, posb = 0,posl =0,post=0;
     
+    int wx=rectView.right/2, wy= rectView.bottom/2;
+
     DoubleDC = CreateCompatibleDC(hdc);
     if (hDoubleBufferImage == NULL)
     {
@@ -165,15 +171,36 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             hMemDC1 = CreateCompatibleDC(DoubleDC);
             hOldBitmap1 = (HBITMAP)SelectObject(hMemDC1, hTransparentImage);
 
-            cameraPos.x = playerPos.x - (645 / 2);
-            cameraPos.y = playerPos.y - (484 / 2);
+            cameraPos.x = playerPos.x - wx;
+            cameraPos.y = playerPos.y - wy;
             //캐릭터 위치로 중심으로 카메라가 움직였으면
 
-            bx = 645 + mapPos.x;
-            by = 484 + mapPos.y;
+            bx = rectView.right;
+            by = rectView.bottom ;
+            //화면 크기 
+            
             //이미지 크기를 전체 크기를 불러오는 것이 아니라 화면 만금의 크기를 가져와야함
-            //645, 484
-            TransparentBlt(DoubleDC, 0, 100, bx - mapPos.x, by - mapPos.y, hMemDC1, 0, 0, bx - mapPos.x, by - mapPos.y, RGB(47, 75, 63));
+            //661, 543
+
+            TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x , cameraPos.y, bx, by, RGB(47, 75, 63));
+
+            if (playerPos.x + wx > 1536)//이미지 크기x
+            {
+                TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x - GetposR(), cameraPos.y, bx, by, RGB(47, 75, 63));
+            }
+            if (playerPos.y + wy > 671)//이미지 크기y
+            {
+                //오류 잘나오다가 마지막에 계속 올라감
+                TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x, cameraPos.y - GetposB(), bx, by, RGB(47, 75, 63));
+            }
+            if (playerPos.x - wx < 0)
+            {
+                TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x + GetposL(), cameraPos.y, bx, by, RGB(47, 75, 63));
+            }
+            if (playerPos.y - wy < 0)
+            {
+                TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x , cameraPos.y + GetposT(), bx, by, RGB(47, 75, 63));
+            }
             //xy위치를 땡겨 와야 한다.
             //mapPos 처음 실행 될때는 0,0이다
             //playerPos 150,50
@@ -181,11 +208,11 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
         {
             hMemDC2 = CreateCompatibleDC(DoubleDC);
             hOldBitmap2 = (HBITMAP)SelectObject(hMemDC2, hcharImage);
-
+            //32/32
             bx = bitChar.bmWidth;
             by = bitChar.bmHeight;
-
-            TransparentBlt(DoubleDC, playerPos.x, playerPos.y + 100, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
+            //캐릭터
+            TransparentBlt(DoubleDC, playerPos.x- cameraPos.x -16, playerPos.y - cameraPos.y-32, bx, by, hMemDC2, 0 , 0 , bx, by, RGB(47, 75, 63));
             DeleteDC(hMemDC2);
         }
         if (isFired)
@@ -198,7 +225,7 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             bx = bitBM.bmWidth;
             by = bitBM.bmHeight;
 
-            TransparentBlt(DoubleDC, result.x, result.y+100, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
+            TransparentBlt(DoubleDC, result.x, result.y, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
             DeleteDC(hMemDC3);
         }
         {
@@ -251,20 +278,20 @@ double cMainGame::AngleInRadians(double angle)
     return revec;
 }
 
-void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _mousePos) // 그리기
+void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _playerPos) // 그리기
 {
     hBrush = CreateSolidBrush(RGB(47, 75, 63));
     oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
     hPen = CreatePen(PS_SOLID, 1, RGB(47, 75, 63));
     oldPen = (HPEN)SelectObject(hdc, hPen);
     
-    Ellipse(hdc, _mousePos.x - 10, _mousePos.y - 10, _mousePos.x + 10, _mousePos.y + 10);
+    Ellipse(hdc, _playerPos.x - 10, _playerPos.y - 10, _playerPos.x + 10, _playerPos.y + 10);
 
-    COLORREF pixelColor = GetPixel(hMemDC1, _mousePos.x, _mousePos.y + 10);
+    COLORREF pixelColor = GetPixel(hMemDC1, _playerPos.x, _playerPos.y);
     COLORREF flyColor = RGB(47, 75, 63);
     if (pixelColor != flyColor)
     {
-        Boom(hMemDC1, _mousePos);
+        Boom(hMemDC1, _playerPos);
         isFired = false;
         t = 0;
     }
@@ -290,7 +317,7 @@ void cMainGame::SetrectView(RECT _rectView)
     rectView.bottom = _rectView.bottom;
     rectView.left = _rectView.left;
     rectView.right = _rectView.right;
-    rectView.top = _rectView.top - 100;
+    rectView.top = _rectView.top;
 }
 RECT cMainGame::GetrectView()
 {
@@ -352,12 +379,56 @@ Vector2& cMainGame::GetmapPos()
 
 void cMainGame::SetcameraPos(Vector2 _cameraPos)
 {
-    cameraPos.x = playerPos.x + ((1536 / 2) - (_cameraPos.x/2));
-    cameraPos.y = playerPos.y + ((671 / 2) - (cameraPos.y / 2));
+    cameraPos.x = _cameraPos.x;
+    cameraPos.y = _cameraPos.y;
 }
 
 Vector2& cMainGame::GetcameraPos()
 {
     return cameraPos;
+    // TODO: 여기에 return 문을 삽입합니다.
+}
+
+void cMainGame::SetposR(double _posr)
+{
+    posr = _posr;
+}
+
+double& cMainGame::GetposR()
+{
+    return posr;
+    // TODO: 여기에 return 문을 삽입합니다.
+}
+
+void cMainGame::SetposL(double _posl)
+{
+    posl = _posl;
+}
+
+double& cMainGame::GetposL()
+{
+    return posl;
+    // TODO: 여기에 return 문을 삽입합니다.
+}
+
+void cMainGame::SetposT(double _post)
+{
+    post = _post;
+}
+
+double& cMainGame::GetposT()
+{
+    return post;
+    // TODO: 여기에 return 문을 삽입합니다.
+}
+
+void cMainGame::SetposB(double _posb)
+{
+    posb = _posb;
+}
+
+double& cMainGame::GetposB()
+{
+    return posb;
     // TODO: 여기에 return 문을 삽입합니다.
 }

@@ -100,7 +100,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      300, 300, 645, 484, nullptr, nullptr, hInstance, nullptr);
+      300, 300, 661, 543, nullptr, nullptr, hInstance, nullptr);
    //645, 484
    if (!hWnd)
    {
@@ -132,11 +132,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static Vector2 mousePos;
     static Vector2 mapPos = game->GetmapPos();
     //선언을 전역 변수로 선언을 해서 값을 계속 가지고 있음
-    RECT rectView;
+    static RECT rectView;
     Vector2& playerPos = game->GetplayerPos();
     Vector2& BMPos = game->GetBMPos();
     double& vec = game->GetAngle();
     //주소로 보내지 않으면 값을 변경하지 못함
+
+    double& posr = game->GetposR();
+    double& posl = game->GetposL();
+    double& posb = game->GetposB();
+    double& post= game->GetposT();
 
     bool& isFired = game->GetFire();
     double& t = game->GetTime();
@@ -163,7 +168,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (wParam == TIMER_1)
         {
             playerPos.y += 5;
+            if (playerPos.y + rectView.bottom > 671)
+                posb += 5;
             game->SetplayerPos(playerPos);
+            game->SetposB(posb);
             InvalidateRect(hWnd, NULL, FALSE);
         }
     }
@@ -174,16 +182,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             playerPos.x -= 5;
             mapPos.x -= 5;
+            if (playerPos.x - rectView.right < 0)
+                posl-=5;
             game->SetplayerPos(playerPos);
             game->SetmapPos(mapPos);
+            game->SetposL(posl);
             InvalidateRect(hWnd, NULL, FALSE);
         }
         if (wParam == 'D' || wParam == 'd')
         {
             playerPos.x += 5;
             mapPos.x += 5;
+            if (playerPos.x + rectView.right > 1536)
+                posr += 5;
             game->SetplayerPos(playerPos);
             game->SetmapPos(mapPos);
+            game->SetposR(posr);
             InvalidateRect(hWnd, NULL, FALSE);
         }
         if (wParam == 'W' || wParam == 'w')
@@ -252,7 +266,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_LBUTTONDOWN:
     {
         mousePos.x = LOWORD(lParam);
-        mousePos.y = HIWORD(lParam) - 100; //위치를 내가 옮겨서 빼줘야함
+        mousePos.y = HIWORD(lParam); //위치를 내가 옮겨서 빼줘야함
         InvalidateRect(hWnd, NULL, FALSE);
     }
     break;
