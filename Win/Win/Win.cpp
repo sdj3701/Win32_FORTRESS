@@ -169,13 +169,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         if (wParam == TIMER_1)
         {
-            if (playerPos.y >= 600)
+            /*if (playerPos.y >= 600)
             {
                 playerPos.y = 600;
             }
             else
-            {
-                playerPos.y += 5;
+            {*/
+                playerPos.y += 5;//중력
                 if (playerPos.y + rectView.bottom / 2 > 671)
                 {
                     posb += 5;
@@ -183,7 +183,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                     testPos += 5;
                     game->SettestPos(testPos);
                 }
-            }
+            //}
             
             game->SetplayerPos(playerPos);
             InvalidateRect(hWnd, NULL, FALSE);

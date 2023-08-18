@@ -172,9 +172,25 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
         {
             hMemDC1 = CreateCompatibleDC(DoubleDC);
             hOldBitmap1 = (HBITMAP)SelectObject(hMemDC1, hTransparentImage);
-
+            
             cameraPos.x = playerPos.x - wx;
             cameraPos.y = playerPos.y - wy;
+            if (playerPos.x + wx > 1536)//이미지 크기x
+            {
+                cameraPos.x = 1536-645;
+            }
+            if (playerPos.y + wy > 671)//이미지 크기y
+            {
+                cameraPos.y = 671 -484 ;
+            }
+            if (playerPos.x - wx < 0)
+            {
+                cameraPos.x = 0;
+            }
+            if (playerPos.y - wy < 0)
+            {
+                cameraPos.y =  0;
+            }
             //캐릭터 위치로 중심으로 카메라가 움직였으면
 
             bx = rectView.right;
@@ -186,23 +202,23 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
 
             TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x , cameraPos.y, bx, by, RGB(47, 75, 63));
 
-            if (playerPos.x + wx > 1536)//이미지 크기x
-            {
-                TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x - GetposR(), cameraPos.y, bx, by, RGB(47, 75, 63));
-            }
-            if (playerPos.y + wy > 671)//이미지 크기y
-            {
-                //오류 잘나오다가 마지막에 계속 올라감
-                TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x, cameraPos.y - GetposB() , bx, by, RGB(47, 75, 63));
-            }
-            if (playerPos.x - wx < 0)
-            {
-                TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x + GetposL(), cameraPos.y, bx, by, RGB(47, 75, 63));
-            }
-            if (playerPos.y - wy < 0)
-            {
-                TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x , cameraPos.y + GetposT(), bx, by, RGB(47, 75, 63));
-            }
+            //if (playerPos.x + wx > 1536)//이미지 크기x
+            //{
+            //    TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x - GetposR(), cameraPos.y, bx, by, RGB(47, 75, 63));
+            //}
+            //if (playerPos.y + wy > 671)//이미지 크기y
+            //{
+            //    //오류 잘나오다가 마지막에 계속 올라감
+            //    TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x, cameraPos.y - GetposB() , bx, by, RGB(47, 75, 63));
+            //}
+            //if (playerPos.x - wx < 0)
+            //{
+            //    TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x + GetposL(), cameraPos.y, bx, by, RGB(47, 75, 63));
+            //}
+            //if (playerPos.y - wy < 0)
+            //{
+            //    TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x , cameraPos.y + GetposT(), bx, by, RGB(47, 75, 63));
+            //}
             //xy위치를 땡겨 와야 한다.
             //mapPos 처음 실행 될때는 0,0이다
             //playerPos 150,50
@@ -227,7 +243,7 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             bx = bitBM.bmWidth;
             by = bitBM.bmHeight;
 
-            TransparentBlt(DoubleDC, result.x, result.y, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
+            TransparentBlt(DoubleDC, result.x - cameraPos.x , result.y - cameraPos.y, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
             DeleteDC(hMemDC3);
         }
         {
