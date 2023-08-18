@@ -143,6 +143,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     double& posb = game->GetposB();
     double& post= game->GetposT();
 
+    double& testPos = game->GettestPos();
+
     bool& isFired = game->GetFire();
     double& t = game->GetTime();
     //시간을 점차 줄여야 함
@@ -167,11 +169,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         if (wParam == TIMER_1)
         {
-            playerPos.y += 5;
-            if (playerPos.y + rectView.bottom > 671)
-                posb += 5;
+            if (playerPos.y >= 600)
+            {
+                playerPos.y = 600;
+            }
+            else
+            {
+                playerPos.y += 5;
+                if (playerPos.y + rectView.bottom / 2 > 671)
+                {
+                    posb += 5;
+                    game->SetposB(posb);
+                    testPos += 5;
+                    game->SettestPos(testPos);
+                }
+            }
+            
             game->SetplayerPos(playerPos);
-            game->SetposB(posb);
             InvalidateRect(hWnd, NULL, FALSE);
         }
     }

@@ -29,12 +29,13 @@ private:
 	
 	RECT rectView;
 
-	Vector2 playerPos = { 817,244 };
+	Vector2 playerPos = { 832,244 };
 	Vector2 BMPos = { 0,0 };
 	Vector2 mapPos = { 0,0 };
 	Vector2 cameraPos = { 0,0 };
 
 	double posr=0, posl=0, post=0, posb=0;
+	double testPos=0;
 	double powerGauge = 0;
 	double vec = {35.0};
 	double revec;
@@ -77,6 +78,9 @@ public:
 
 	void SetcameraPos(Vector2 _cameraPos);
 	Vector2& GetcameraPos();
+
+	void SettestPos(double _testPos);
+	double& GettestPos();
 
 	void SetposR(double _posr);
 	double& GetposR();

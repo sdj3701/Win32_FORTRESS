@@ -126,6 +126,8 @@ void cMainGame::Player(HDC hdc)
     COLORREF flyColor = RGB(47, 75, 63);
     if (pixelColor != flyColor)
     {
+        /*post -= 5;
+        SetposT(post);*/
         playerPos.y -= 5;
         SetplayerPos(playerPos);
         if (playerPos.y - rectView.bottom / 2 < 0)
@@ -191,7 +193,7 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             if (playerPos.y + wy > 671)//이미지 크기y
             {
                 //오류 잘나오다가 마지막에 계속 올라감
-                TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x, cameraPos.y - GetposB(), bx, by, RGB(47, 75, 63));
+                TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x, cameraPos.y - GetposB() , bx, by, RGB(47, 75, 63));
             }
             if (playerPos.x - wx < 0)
             {
@@ -387,6 +389,16 @@ Vector2& cMainGame::GetcameraPos()
 {
     return cameraPos;
     // TODO: 여기에 return 문을 삽입합니다.
+}
+
+void cMainGame::SettestPos(double _testPos)
+{
+    testPos = _testPos;
+}
+
+double& cMainGame::GettestPos()
+{
+    return testPos;
 }
 
 void cMainGame::SetposR(double _posr)
