@@ -138,11 +138,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     double& vec = game->GetAngle();
     //주소로 보내지 않으면 값을 변경하지 못함
 
-    double& posr = game->GetposR();
-    double& posl = game->GetposL();
-    double& posb = game->GetposB();
-    double& post= game->GetposT();
-
     double& testPos = game->GettestPos();
 
     bool& isFired = game->GetFire();
@@ -169,22 +164,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         if (wParam == TIMER_1)
         {
-            /*if (playerPos.y >= 600)
-            {
-                playerPos.y = 600;
-            }
-            else
-            {*/
-                playerPos.y += 5;//중력
-                if (playerPos.y + rectView.bottom / 2 > 671)
-                {
-                    posb += 5;
-                    game->SetposB(posb);
-                    testPos += 5;
-                    game->SettestPos(testPos);
-                }
-            //}
-            
+            playerPos.y += 5;//중력
             game->SetplayerPos(playerPos);
             InvalidateRect(hWnd, NULL, FALSE);
         }
@@ -196,22 +176,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             playerPos.x -= 5;
             mapPos.x -= 5;
-            if (playerPos.x - rectView.right < 0)
-                posl-=5;
             game->SetplayerPos(playerPos);
             game->SetmapPos(mapPos);
-            game->SetposL(posl);
+
             InvalidateRect(hWnd, NULL, FALSE);
         }
         if (wParam == 'D' || wParam == 'd')
         {
             playerPos.x += 5;
             mapPos.x += 5;
-            if (playerPos.x + rectView.right > 1536)
-                posr += 5;
             game->SetplayerPos(playerPos);
             game->SetmapPos(mapPos);
-            game->SetposR(posr);
             InvalidateRect(hWnd, NULL, FALSE);
         }
         if (wParam == 'W' || wParam == 'w')

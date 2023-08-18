@@ -34,7 +34,6 @@ private:
 	Vector2 mapPos = { 0,0 };
 	Vector2 cameraPos = { 0,0 };
 
-	double posr=0, posl=0, post=0, posb=0;
 	double testPos=0;
 	double powerGauge = 0;
 	double vec = {35.0};
@@ -82,14 +81,7 @@ public:
 	void SettestPos(double _testPos);
 	double& GettestPos();
 
-	void SetposR(double _posr);
-	double& GetposR();
-	void SetposL(double _posl);
-	double& GetposL();
-	void SetposT(double _post);
-	double& GetposT();
-	void SetposB(double _posb);
-	double& GetposB();
+
 
 	Vector2 BM(HWND hWnd, HDC hdc, Vector2 v, double t, double _powerGauge);//계산된 탄 포물선 방적식을 계산해서 발사하는 함수
 	Vector2 SetBMPos(double _vec); //(BMPos를 각도에 따라 계산 하기 위한 함수)

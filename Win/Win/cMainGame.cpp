@@ -126,15 +126,8 @@ void cMainGame::Player(HDC hdc)
     COLORREF flyColor = RGB(47, 75, 63);
     if (pixelColor != flyColor)
     {
-        /*post -= 5;
-        SetposT(post);*/
         playerPos.y -= 5;
         SetplayerPos(playerPos);
-        if (playerPos.y - rectView.bottom / 2 < 0)
-        {
-            post -= 5;
-            SetposT(post);
-        }
     }
 }
 
@@ -175,11 +168,11 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             
             cameraPos.x = playerPos.x - wx;
             cameraPos.y = playerPos.y - wy;
-            if (playerPos.x + wx > 1536)//이미지 크기x
+            if (playerPos.x + wx > 1536)
             {
                 cameraPos.x = 1536-645;
             }
-            if (playerPos.y + wy > 671)//이미지 크기y
+            if (playerPos.y + wy > 671)
             {
                 cameraPos.y = 671 -484 ;
             }
@@ -191,7 +184,6 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             {
                 cameraPos.y =  0;
             }
-            //캐릭터 위치로 중심으로 카메라가 움직였으면
 
             bx = rectView.right;
             by = rectView.bottom ;
@@ -202,26 +194,6 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
 
             TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x , cameraPos.y, bx, by, RGB(47, 75, 63));
 
-            //if (playerPos.x + wx > 1536)//이미지 크기x
-            //{
-            //    TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x - GetposR(), cameraPos.y, bx, by, RGB(47, 75, 63));
-            //}
-            //if (playerPos.y + wy > 671)//이미지 크기y
-            //{
-            //    //오류 잘나오다가 마지막에 계속 올라감
-            //    TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x, cameraPos.y - GetposB() , bx, by, RGB(47, 75, 63));
-            //}
-            //if (playerPos.x - wx < 0)
-            //{
-            //    TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x + GetposL(), cameraPos.y, bx, by, RGB(47, 75, 63));
-            //}
-            //if (playerPos.y - wy < 0)
-            //{
-            //    TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x , cameraPos.y + GetposT(), bx, by, RGB(47, 75, 63));
-            //}
-            //xy위치를 땡겨 와야 한다.
-            //mapPos 처음 실행 될때는 0,0이다
-            //playerPos 150,50
         }
         {
             hMemDC2 = CreateCompatibleDC(DoubleDC);
@@ -415,48 +387,4 @@ void cMainGame::SettestPos(double _testPos)
 double& cMainGame::GettestPos()
 {
     return testPos;
-}
-
-void cMainGame::SetposR(double _posr)
-{
-    posr = _posr;
-}
-
-double& cMainGame::GetposR()
-{
-    return posr;
-    // TODO: 여기에 return 문을 삽입합니다.
-}
-
-void cMainGame::SetposL(double _posl)
-{
-    posl = _posl;
-}
-
-double& cMainGame::GetposL()
-{
-    return posl;
-    // TODO: 여기에 return 문을 삽입합니다.
-}
-
-void cMainGame::SetposT(double _post)
-{
-    post = _post;
-}
-
-double& cMainGame::GetposT()
-{
-    return post;
-    // TODO: 여기에 return 문을 삽입합니다.
-}
-
-void cMainGame::SetposB(double _posb)
-{
-    posb = _posb;
-}
-
-double& cMainGame::GetposB()
-{
-    return posb;
-    // TODO: 여기에 return 문을 삽입합니다.
 }
