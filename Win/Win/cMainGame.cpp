@@ -158,7 +158,7 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             bx = bitBack.bmWidth;
             by = bitBack.bmHeight;
 
-            BitBlt(DoubleDC, 0, 0, bx, by, hMemDC, 0, 0, SRCCOPY);
+            BitBlt(DoubleDC, 0, 0, bx, by, hMemDC, playerPos.x, playerPos.y, SRCCOPY);
             SelectObject(hMemDC, hOldBitmap);
             DeleteDC(hMemDC);
         }
