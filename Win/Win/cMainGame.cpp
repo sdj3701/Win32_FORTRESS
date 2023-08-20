@@ -30,14 +30,14 @@ cMainGame::~cMainGame()
     
 }
 
-void cMainGame::Boom(HDC hdc, Vector2 _mousePos)
+void cMainGame::Boom(HDC hdc, Vector2 _playerPos)
 {
     hBrush = CreateSolidBrush(RGB(47, 75, 63));
     oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
     hPen = CreatePen(PS_SOLID, 1, RGB(47, 75, 63));
     oldPen = (HPEN)SelectObject(hdc, hPen);
 
-    Ellipse(hdc, (_mousePos.x + 10) - 20, (_mousePos.y +10)- 20, (_mousePos.x + 10) + 20, (_mousePos.y + 10) + 20);
+    Ellipse(hdc, (_playerPos.x + 10) - 20, (_playerPos.y +10)- 20, (_playerPos.x + 10) + 20, (_playerPos.y + 10) + 20);
     
     SelectObject(hdc, oldPen);
     DeleteObject(hPen);
@@ -158,7 +158,7 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             bx = bitBack.bmWidth;
             by = bitBack.bmHeight;
 
-            BitBlt(DoubleDC, 0, 0, bx, by, hMemDC, playerPos.x, playerPos.y, SRCCOPY);
+            BitBlt(DoubleDC, 0, 0, bx, by, hMemDC, cameraPos.x, cameraPos.y, SRCCOPY);
             SelectObject(hMemDC, hOldBitmap);
             DeleteDC(hMemDC);
         }
@@ -236,7 +236,6 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
 
     SelectObject(DoubleDC, hOldDoubleBitmap);
     DeleteDC(DoubleDC);
-
 }
 
 Vector2 cMainGame::BM(HWND hWnd,HDC hdc,Vector2 v,double t,double _powerGauge)

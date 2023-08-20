@@ -172,66 +172,72 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_KEYDOWN:
-        if (wParam == 'A' || wParam == 'a')
+        if (!isFired)
         {
-            playerPos.x -= 5;
-            mapPos.x -= 5;
-            game->SetplayerPos(playerPos);
-            game->SetmapPos(mapPos);
-
-            InvalidateRect(hWnd, NULL, FALSE);
-        }
-        if (wParam == 'D' || wParam == 'd')
-        {
-            playerPos.x += 5;
-            mapPos.x += 5;
-            game->SetplayerPos(playerPos);
-            game->SetmapPos(mapPos);
-            InvalidateRect(hWnd, NULL, FALSE);
-        }
-        if (wParam == 'W' || wParam == 'w')
-        {
-            if (vec == 55)  return vec;
-            else    vec += 1;
-            game->SetAngle(vec);
-            InvalidateRect(hWnd, NULL, FALSE);
-        }
-        if (wParam == 'S' || wParam == 's')
-        {
-            if (vec == 10)  return vec;
-            else    vec -= 1;
-            game->SetAngle(vec);
-            InvalidateRect(hWnd, NULL, FALSE);
-        }
-
-        if (wParam == VK_SPACE)
-        {
-            if (count == 0)
+            if (wParam == 'A' || wParam == 'a')
             {
-                startTime = GetTickCount();
-                count++;
-                //스페이스바를 사용했을 때 시간 측정
+                playerPos.x -= 5;
+                mapPos.x -= 5;
+                game->SetplayerPos(playerPos);
+                game->SetmapPos(mapPos);
+
+                InvalidateRect(hWnd, NULL, FALSE);
             }
-            InvalidateRect(hWnd, NULL, FALSE);
+            if (wParam == 'D' || wParam == 'd')
+            {
+                playerPos.x += 5;
+                mapPos.x += 5;
+                game->SetplayerPos(playerPos);
+                game->SetmapPos(mapPos);
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+            if (wParam == 'W' || wParam == 'w')
+            {
+                if (vec == 55)  return vec;
+                else    vec += 1;
+                game->SetAngle(vec);
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+            if (wParam == 'S' || wParam == 's')
+            {
+                if (vec == 10)  return vec;
+                else    vec -= 1;
+                game->SetAngle(vec);
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+            if (wParam == VK_SPACE)
+            {
+
+                if (count == 0)
+                {
+                    startTime = GetTickCount();
+                    count++;
+                    //스페이스바를 사용했을 때 시간 측정
+                }
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
         }
         break;
 
     case WM_KEYUP:
         if (wParam == VK_SPACE)
         {
-            endTime = GetTickCount();
-            //끝나는 시간 측정
-            DWORD elapsedTime = endTime - startTime;
-            //시간 누르는 시간 체크
-            powerGauge += elapsedTime;
-            if (powerGauge > 1500)    powerGauge = 1500;
-            game->SetpowerGauge(powerGauge);
-            game->SetBMPos(vec);
-            isFired = true;
-            game->SetFire(isFired);
-            InvalidateRect(hWnd, NULL, FALSE);
-            count = 0;
-            powerGauge = 0;
+            if (!isFired)
+            {
+                endTime = GetTickCount();
+                //끝나는 시간 측정
+                DWORD elapsedTime = endTime - startTime;
+                //시간 누르는 시간 체크
+                powerGauge += elapsedTime;
+                if (powerGauge > 1500)    powerGauge = 1500;
+                game->SetpowerGauge(powerGauge);
+                game->SetBMPos(vec);
+                isFired = true;
+                game->SetFire(isFired);
+                count = 0;
+                powerGauge = 0;
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
         }
         break;
 
@@ -269,9 +275,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             //비트맵 그려주기
             
             if (isFired)    t += 0.1;
-            
-            
             // 데미지가 있을 때에만 맵을 다시 그려야 함
+
             EndPaint(hWnd, &ps);
         }
         break;

@@ -47,7 +47,7 @@ public:
 	cMainGame();
 	~cMainGame();
 public:
-	void Boom(HDC hdc, Vector2 _mousePos);
+	void Boom(HDC hdc, Vector2 _playerPos);
 	void Player(HDC hdc);
 
 	void CreateBitmap();
