@@ -129,8 +129,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static cMainGame* game = new cMainGame();
-    static Vector2 mousePos;
-    static Vector2 mapPos = game->GetmapPos();
+    static Vector2 mousePos = game->GetmousePos();
     //선언을 전역 변수로 선언을 해서 값을 계속 가지고 있음
     static RECT rectView;
     Vector2& playerPos = game->GetplayerPos();
@@ -164,9 +163,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         if (wParam == TIMER_1)
         {
-            playerPos.y += 5;//중력
-            game->SetplayerPos(playerPos);
-            InvalidateRect(hWnd, NULL, FALSE);
+            if (!isFired)
+            {
+                playerPos.y += 5;//중력
+                game->SetplayerPos(playerPos);
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
         }
     }
         break;
@@ -177,18 +179,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             if (wParam == 'A' || wParam == 'a')
             {
                 playerPos.x -= 5;
-                mapPos.x -= 5;
                 game->SetplayerPos(playerPos);
-                game->SetmapPos(mapPos);
 
                 InvalidateRect(hWnd, NULL, FALSE);
             }
             if (wParam == 'D' || wParam == 'd')
             {
                 playerPos.x += 5;
-                mapPos.x += 5;
                 game->SetplayerPos(playerPos);
-                game->SetmapPos(mapPos);
                 InvalidateRect(hWnd, NULL, FALSE);
             }
             if (wParam == 'W' || wParam == 'w')
@@ -262,6 +260,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         mousePos.x = LOWORD(lParam);
         mousePos.y = HIWORD(lParam); //위치를 내가 옮겨서 빼줘야함
+        game->SetmousePos(mousePos);
         InvalidateRect(hWnd, NULL, FALSE);
     }
     break;

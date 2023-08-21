@@ -39,7 +39,7 @@ void cMainGame::Boom(HDC hdc, Vector2 _playerPos)
 
     Ellipse(hdc, (_playerPos.x + 10) - 20, (_playerPos.y +10)- 20, (_playerPos.x + 10) + 20, (_playerPos.y + 10) + 20);
     
-    SelectObject(hdc, oldPen);
+    SelectObject(hdc, oldPen); 
     DeleteObject(hPen);
     SelectObject(hdc, oldBrush);
     DeleteObject(hBrush);
@@ -126,8 +126,11 @@ void cMainGame::Player(HDC hdc)
     COLORREF flyColor = RGB(47, 75, 63);
     if (pixelColor != flyColor)
     {
-        playerPos.y -= 5;
-        SetplayerPos(playerPos);
+        if (!isFired)
+        {
+            playerPos.y -= 5;
+            SetplayerPos(playerPos);
+        }        
     }
 }
 
@@ -142,6 +145,36 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
     static int posr = 0, posb = 0,posl =0,post=0;
     
     int wx=rectView.right/2, wy= rectView.bottom/2;
+    Vector2 result;
+    Vector2 bulletcameraPos;
+    if (!isFired)
+    {
+        cameraPos.x = playerPos.x - wx;
+        cameraPos.y = playerPos.y - wy;
+        if (playerPos.x + wx > 1536)
+        {
+            cameraPos.x = 1536 - 645;
+        }
+        if (playerPos.y + wy > 671)
+        {
+            cameraPos.y = 671 - 484;
+        }
+        if (playerPos.x - wx < 0)
+        {
+            cameraPos.x = 0;
+        }
+        if (playerPos.y - wy < 0)
+        {
+            cameraPos.y = 0;
+        }
+    }
+    else
+    {
+        Vector2 result = BM(hWnd, hMemDC3, BMPos, t, GetpowerGauge());
+        bulletcameraPos = { result.x - cameraPos.x ,result.y - cameraPos.y };
+
+        cameraPos = bulletcameraPos;
+    }
 
     DoubleDC = CreateCompatibleDC(hdc);
     if (hDoubleBufferImage == NULL)
@@ -158,6 +191,8 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             bx = bitBack.bmWidth;
             by = bitBack.bmHeight;
 
+            Ellipse(hMemDC, playerPos.x - 10, playerPos.y - 10, playerPos.x + 10, playerPos.y + 10);
+
             BitBlt(DoubleDC, 0, 0, bx, by, hMemDC, cameraPos.x, cameraPos.y, SRCCOPY);
             SelectObject(hMemDC, hOldBitmap);
             DeleteDC(hMemDC);
@@ -166,24 +201,7 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             hMemDC1 = CreateCompatibleDC(DoubleDC);
             hOldBitmap1 = (HBITMAP)SelectObject(hMemDC1, hTransparentImage);
             
-            cameraPos.x = playerPos.x - wx;
-            cameraPos.y = playerPos.y - wy;
-            if (playerPos.x + wx > 1536)
-            {
-                cameraPos.x = 1536-645;
-            }
-            if (playerPos.y + wy > 671)
-            {
-                cameraPos.y = 671 -484 ;
-            }
-            if (playerPos.x - wx < 0)
-            {
-                cameraPos.x = 0;
-            }
-            if (playerPos.y - wy < 0)
-            {
-                cameraPos.y =  0;
-            }
+            
 
             bx = rectView.right;
             by = rectView.bottom ;
@@ -193,7 +211,6 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             //661, 543
 
             TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x , cameraPos.y, bx, by, RGB(47, 75, 63));
-
         }
         {
             hMemDC2 = CreateCompatibleDC(DoubleDC);
@@ -202,20 +219,19 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             bx = bitChar.bmWidth;
             by = bitChar.bmHeight;
             //캐릭터
+
             TransparentBlt(DoubleDC, playerPos.x- cameraPos.x -16, playerPos.y - cameraPos.y-32, bx, by, hMemDC2, 0 , 0 , bx, by, RGB(47, 75, 63));
             DeleteDC(hMemDC2);
         }
         if (isFired)
         {
-
             hMemDC3 = CreateCompatibleDC(DoubleDC);
             hOldBitmap3 = (HBITMAP)SelectObject(hMemDC3, hBMImage);
 
-            Vector2 result = BM(hWnd, hMemDC3, BMPos, t, GetpowerGauge());
             bx = bitBM.bmWidth;
             by = bitBM.bmHeight;
 
-            TransparentBlt(DoubleDC, result.x - cameraPos.x , result.y - cameraPos.y, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
+            TransparentBlt(DoubleDC, bulletcameraPos.x, bulletcameraPos.y, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
             DeleteDC(hMemDC3);
         }
         {
@@ -238,14 +254,14 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
     DeleteDC(DoubleDC);
 }
 
-Vector2 cMainGame::BM(HWND hWnd,HDC hdc,Vector2 v,double t,double _powerGauge)
+Vector2 cMainGame::BM(HWND hWnd,HDC hdc,Vector2 _BMPos,double t,double _powerGauge)
 {
-    double x =  (_powerGauge/10) * t * v.x;
-    double y =  (_powerGauge/10) * t * v.y - (0.5 * g * t * t);
+    double x =  (_powerGauge/10) * t * _BMPos.x;
+    double y = (-1) * ((_powerGauge / 10) * t * _BMPos.y - (0.5 * g * t * t));
     
-    Draw(hWnd, hdc, Vector2(x + playerPos.x, -(y)+(playerPos.y)));
+    Draw(hWnd, hdc, Vector2(x + playerPos.x, y + playerPos.y - 16));
      
-    return Vector2(x + playerPos.x, -(y)+(playerPos.y));
+    return Vector2(x + playerPos.x, y + playerPos.y);
 }
 
 Vector2 cMainGame::SetBMPos(double _vec)
@@ -278,7 +294,9 @@ void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _playerPos) // 그리기
 
     COLORREF pixelColor = GetPixel(hMemDC1, _playerPos.x, _playerPos.y);
     COLORREF flyColor = RGB(47, 75, 63);
-    if (pixelColor != flyColor)
+    if (GetRValue(pixelColor) == GetRValue(flyColor) &&
+        GetGValue(pixelColor) == GetGValue(flyColor) &&
+        GetBValue(pixelColor) == GetBValue(flyColor))
     {
         Boom(hMemDC1, _playerPos);
         isFired = false;
@@ -294,7 +312,7 @@ void cMainGame::SetplayerPos(Vector2 _playerPos)
 {
     playerPos.x = _playerPos.x;
     playerPos.y = _playerPos.y;
-}
+} 
 Vector2& cMainGame::GetplayerPos()
 {
     return playerPos;
@@ -354,15 +372,15 @@ double& cMainGame::GetpowerGauge()
     // TODO: 여기에 return 문을 삽입합니다.
 }
 
-void cMainGame::SetmapPos(Vector2 _mapPos)
+void cMainGame::SetmousePos(Vector2 _mousePos)
 {
-    mapPos.x = _mapPos.x;
-    mapPos.y = _mapPos.y;
+    mousePos.x = _mousePos.x;
+    mousePos.y = _mousePos.y;
 }
 
-Vector2& cMainGame::GetmapPos()
+Vector2& cMainGame::GetmousePos()
 {
-    return mapPos;
+    return mousePos;
     // TODO: 여기에 return 문을 삽입합니다.
 }
 

@@ -31,7 +31,7 @@ private:
 
 	Vector2 playerPos = { 832,244 };
 	Vector2 BMPos = { 0,0 };
-	Vector2 mapPos = { 0,0 };
+	Vector2 mousePos = { 0,0 };
 	Vector2 cameraPos = { 0,0 };
 
 	double testPos=0;
@@ -72,8 +72,8 @@ public:
 	void SetpowerGauge(double _powerGauge);
 	double& GetpowerGauge();
 
-	void SetmapPos(Vector2 _mapPos);
-	Vector2& GetmapPos();
+	void SetmousePos(Vector2 _mousePos);
+	Vector2& GetmousePos();
 
 	void SetcameraPos(Vector2 _cameraPos);
 	Vector2& GetcameraPos();
