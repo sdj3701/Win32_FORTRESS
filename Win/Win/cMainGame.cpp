@@ -122,27 +122,29 @@ void cMainGame::DeleteBitmap()
 
 void cMainGame::Player(HDC hdc)
 {
+    //여기는 색이 같다고 오류가 남
     COLORREF pixelColor = GetPixel(hdc, playerPos.x, playerPos.y);
     COLORREF flyColor = RGB(47, 75, 63);
     if (pixelColor != flyColor)
     {
-        if (!isFired)
-        {
-            playerPos.y -= 5;
-            SetplayerPos(playerPos);
-        }        
+        playerPos.y -= 5;
+        SetplayerPos(playerPos);
     }
+    /*if (isFired)
+    {
+        playerPos.y -= 5;
+        SetplayerPos(playerPos);
+    }*/
 }
 
 HDC hMemDC, hMemDC1, hMemDC2, hMemDC3, hMemDC4;
 HBITMAP hOldBitmap, hOldBitmap1, hOldBitmap2, hOldBitmap3, hOldBitmap4;
+HDC DoubleDC;
+HBITMAP hOldDoubleBitmap;
+
 void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
 {
-    HDC DoubleDC;
-    HBITMAP hOldDoubleBitmap;
-
     int bx, by;
-    static int posr = 0, posb = 0,posl =0,post=0;
     
     int wx=rectView.right/2, wy= rectView.bottom/2;
     Vector2 result;
@@ -170,10 +172,42 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
     }
     else
     {
-        Vector2 result = BM(hWnd, hMemDC3, BMPos, t, GetpowerGauge());
-        bulletcameraPos = { result.x - cameraPos.x ,result.y - cameraPos.y };
+        result = BM(hWnd, hMemDC3, BMPos, t, GetpowerGauge());
 
-        cameraPos = bulletcameraPos;
+        bulletcameraPos.x = result.x - wx;
+        bulletcameraPos.y = result.y - wy;
+
+        if (result.x + wx > 1536)
+        {
+            bulletcameraPos.x = 1536 - 645;
+            if (result.x >= 1536)
+            {
+                isFired = false;
+                t = 0;
+            }
+        }
+        if (result.y + wy > 671)
+        {
+            bulletcameraPos.y = 671 - 484;
+            if (result.y >= 671)
+            {
+                isFired = false;
+                t = 0;
+            }
+        }
+        if (result.x - wx < 0)
+        {
+            bulletcameraPos.x = 0;
+            if (result.x <= 0)
+            {
+                isFired = false;
+                t = 0;
+            }
+        }
+        if (result.y - wy < 0)
+        {
+            bulletcameraPos.y = 0;
+        }
     }
 
     DoubleDC = CreateCompatibleDC(hdc);
@@ -191,17 +225,18 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             bx = bitBack.bmWidth;
             by = bitBack.bmHeight;
 
-            Ellipse(hMemDC, playerPos.x - 10, playerPos.y - 10, playerPos.x + 10, playerPos.y + 10);
+            //Ellipse(hMemDC, playerPos.x - 10, playerPos.y - 10, playerPos.x + 10, playerPos.y + 10);
+            if(!isFired)
+                BitBlt(DoubleDC, 0, 0, bx, by, hMemDC, cameraPos.x, cameraPos.y, SRCCOPY);
+            else
+                BitBlt(DoubleDC, 0, 0, bx, by, hMemDC, bulletcameraPos.x, bulletcameraPos.y, SRCCOPY);
 
-            BitBlt(DoubleDC, 0, 0, bx, by, hMemDC, cameraPos.x, cameraPos.y, SRCCOPY);
             SelectObject(hMemDC, hOldBitmap);
             DeleteDC(hMemDC);
         }
         {
             hMemDC1 = CreateCompatibleDC(DoubleDC);
             hOldBitmap1 = (HBITMAP)SelectObject(hMemDC1, hTransparentImage);
-            
-            
 
             bx = rectView.right;
             by = rectView.bottom ;
@@ -209,8 +244,11 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             
             //이미지 크기를 전체 크기를 불러오는 것이 아니라 화면 만금의 크기를 가져와야함
             //661, 543
+            if (!isFired)
+                TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x, cameraPos.y, bx, by, RGB(47, 75, 63));
+            else
+                TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, bulletcameraPos.x, bulletcameraPos.y, bx, by, RGB(47, 75, 63));
 
-            TransparentBlt(DoubleDC, 0, 0, bx, by, hMemDC1, cameraPos.x , cameraPos.y, bx, by, RGB(47, 75, 63));
         }
         {
             hMemDC2 = CreateCompatibleDC(DoubleDC);
@@ -219,8 +257,12 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             bx = bitChar.bmWidth;
             by = bitChar.bmHeight;
             //캐릭터
+            if (!isFired)
+                TransparentBlt(DoubleDC, playerPos.x- cameraPos.x -16, playerPos.y - cameraPos.y-32, bx, by, hMemDC2, 0 , 0 , bx, by, RGB(47, 75, 63));
+            else
+                TransparentBlt(DoubleDC, playerPos.x - bulletcameraPos.x- 16 , playerPos.y- bulletcameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
+            
 
-            TransparentBlt(DoubleDC, playerPos.x- cameraPos.x -16, playerPos.y - cameraPos.y-32, bx, by, hMemDC2, 0 , 0 , bx, by, RGB(47, 75, 63));
             DeleteDC(hMemDC2);
         }
         if (isFired)
@@ -230,8 +272,9 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
 
             bx = bitBM.bmWidth;
             by = bitBM.bmHeight;
+           
+            TransparentBlt(DoubleDC, result.x - bulletcameraPos.x, result.y - bulletcameraPos.y, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
 
-            TransparentBlt(DoubleDC, bulletcameraPos.x, bulletcameraPos.y, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
             DeleteDC(hMemDC3);
         }
         {
@@ -240,8 +283,9 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
 
             bx = bitUI.bmWidth;
             by = bitUI.bmHeight;
-
             TransparentBlt(DoubleDC, 0, rectView.bottom-159, bx, by, hMemDC4, 0, 0, bx, by, RGB(47, 75, 63));
+            
+
             DeleteDC(hMemDC4);
         }
         Player(hMemDC1);
@@ -252,16 +296,6 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
 
     SelectObject(DoubleDC, hOldDoubleBitmap);
     DeleteDC(DoubleDC);
-}
-
-Vector2 cMainGame::BM(HWND hWnd,HDC hdc,Vector2 _BMPos,double t,double _powerGauge)
-{
-    double x =  (_powerGauge/10) * t * _BMPos.x;
-    double y = (-1) * ((_powerGauge / 10) * t * _BMPos.y - (0.5 * g * t * t));
-    
-    Draw(hWnd, hdc, Vector2(x + playerPos.x, y + playerPos.y - 16));
-     
-    return Vector2(x + playerPos.x, y + playerPos.y);
 }
 
 Vector2 cMainGame::SetBMPos(double _vec)
@@ -283,30 +317,42 @@ double cMainGame::AngleInRadians(double angle)
     return revec;
 }
 
+Vector2 cMainGame::BM(HWND hWnd, HDC hdc, Vector2 _BMPos, double t, double _powerGauge)
+{
+    bulletPosx = (_powerGauge / 10) * t * _BMPos.x;
+    bulletPosy = (-1) * ((_powerGauge / 10) * t * _BMPos.y - (0.5 * g * t * t));
+
+    Draw(hWnd, hdc, Vector2(bulletPosx + playerPos.x, bulletPosy + playerPos.y - 16));
+
+    return Vector2(bulletPosx + playerPos.x, bulletPosy + playerPos.y-16);
+}
+
 void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _playerPos) // 그리기
 {
-    hBrush = CreateSolidBrush(RGB(47, 75, 63));
-    oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
-    hPen = CreatePen(PS_SOLID, 1, RGB(47, 75, 63));
-    oldPen = (HPEN)SelectObject(hdc, hPen);
-    
-    Ellipse(hdc, _playerPos.x - 10, _playerPos.y - 10, _playerPos.x + 10, _playerPos.y + 10);
+    //hBrush = CreateSolidBrush(RGB(47, 75, 63));
+    //oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
+    //hPen = CreatePen(PS_SOLID, 1, RGB(47, 75, 63));
+    //oldPen = (HPEN)SelectObject(hdc, hPen);
+    // 
+    //Ellipse(hdc, _playerPos.x - 10, _playerPos.y - 10, _playerPos.x + 10, _playerPos.y + 10);
 
     COLORREF pixelColor = GetPixel(hMemDC1, _playerPos.x, _playerPos.y);
     COLORREF flyColor = RGB(47, 75, 63);
-    if (GetRValue(pixelColor) == GetRValue(flyColor) &&
-        GetGValue(pixelColor) == GetGValue(flyColor) &&
-        GetBValue(pixelColor) == GetBValue(flyColor))
+    if (pixelColor != flyColor)
     {
         Boom(hMemDC1, _playerPos);
         isFired = false;
         t = 0;
     }
-    SelectObject(hdc, oldPen);
+    /*SelectObject(hdc, oldPen);
     DeleteObject(hPen);
     SelectObject(hdc, oldBrush);
-    DeleteObject(hBrush);
+    DeleteObject(hBrush);*/
 }
+
+/*
+
+*/
 
 void cMainGame::SetplayerPos(Vector2 _playerPos)
 {
@@ -394,14 +440,4 @@ Vector2& cMainGame::GetcameraPos()
 {
     return cameraPos;
     // TODO: 여기에 return 문을 삽입합니다.
-}
-
-void cMainGame::SettestPos(double _testPos)
-{
-    testPos = _testPos;
-}
-
-double& cMainGame::GettestPos()
-{
-    return testPos;
 }

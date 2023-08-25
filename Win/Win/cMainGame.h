@@ -34,14 +34,14 @@ private:
 	Vector2 mousePos = { 0,0 };
 	Vector2 cameraPos = { 0,0 };
 
-	double testPos=0;
 	double powerGauge = 0;
 	double vec = {35.0};
 	double revec;
 	double t = 0;
 	const double g = 9.81;
 	bool isFired = false;
-
+	double bulletPosx;
+	double bulletPosy;
 
 public:
 	cMainGame();
@@ -78,8 +78,7 @@ public:
 	void SetcameraPos(Vector2 _cameraPos);
 	Vector2& GetcameraPos();
 
-	void SettestPos(double _testPos);
-	double& GettestPos();
+
 
 
 

@@ -137,8 +137,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     double& vec = game->GetAngle();
     //주소로 보내지 않으면 값을 변경하지 못함
 
-    double& testPos = game->GettestPos();
-
     bool& isFired = game->GetFire();
     double& t = game->GetTime();
     //시간을 점차 줄여야 함
@@ -163,57 +161,52 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         if (wParam == TIMER_1)
         {
-            if (!isFired)
-            {
-                playerPos.y += 5;//중력
-                game->SetplayerPos(playerPos);
-                InvalidateRect(hWnd, NULL, FALSE);
-            }
+            playerPos.y += 5;//중력
+            game->SetplayerPos(playerPos);
+            InvalidateRect(hWnd, NULL, FALSE);
         }
     }
         break;
 
     case WM_KEYDOWN:
-        if (!isFired)
+
+        if (wParam == 'A' || wParam == 'a')
         {
-            if (wParam == 'A' || wParam == 'a')
-            {
-                playerPos.x -= 5;
-                game->SetplayerPos(playerPos);
+            playerPos.x -= 5;
+            game->SetplayerPos(playerPos);
 
-                InvalidateRect(hWnd, NULL, FALSE);
-            }
-            if (wParam == 'D' || wParam == 'd')
-            {
-                playerPos.x += 5;
-                game->SetplayerPos(playerPos);
-                InvalidateRect(hWnd, NULL, FALSE);
-            }
-            if (wParam == 'W' || wParam == 'w')
-            {
-                if (vec == 55)  return vec;
-                else    vec += 1;
-                game->SetAngle(vec);
-                InvalidateRect(hWnd, NULL, FALSE);
-            }
-            if (wParam == 'S' || wParam == 's')
-            {
-                if (vec == 10)  return vec;
-                else    vec -= 1;
-                game->SetAngle(vec);
-                InvalidateRect(hWnd, NULL, FALSE);
-            }
-            if (wParam == VK_SPACE)
-            {
+            InvalidateRect(hWnd, NULL, FALSE);
+        }
+        if (wParam == 'D' || wParam == 'd')
+        {
+            playerPos.x += 5;
+            game->SetplayerPos(playerPos);
+            InvalidateRect(hWnd, NULL, FALSE);
+        }
+        if (wParam == 'W' || wParam == 'w')
+        {
+            if (vec == 55)  return vec;
+            else    vec += 1;
+            game->SetAngle(vec);
+            InvalidateRect(hWnd, NULL, FALSE);
+        }
+        if (wParam == 'S' || wParam == 's')
+        {
+            if (vec == 10)  return vec;
+            else    vec -= 1;
+            game->SetAngle(vec);
+            InvalidateRect(hWnd, NULL, FALSE);
+        }
+        if (wParam == VK_SPACE)
+        {
 
-                if (count == 0)
-                {
-                    startTime = GetTickCount();
-                    count++;
-                    //스페이스바를 사용했을 때 시간 측정
-                }
-                InvalidateRect(hWnd, NULL, FALSE);
+            if (count == 0)
+            {
+                startTime = GetTickCount();
+                count++;
+                //스페이스바를 사용했을 때 시간 측정
             }
+            InvalidateRect(hWnd, NULL, FALSE);
         }
         break;
 
