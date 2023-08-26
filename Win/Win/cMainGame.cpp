@@ -37,7 +37,7 @@ void cMainGame::Boom(HDC hdc, Vector2 _playerPos)
     hPen = CreatePen(PS_SOLID, 1, RGB(47, 75, 63));
     oldPen = (HPEN)SelectObject(hdc, hPen);
 
-    Ellipse(hdc, (_playerPos.x + 10) - 20, (_playerPos.y +10)- 20, (_playerPos.x + 10) + 20, (_playerPos.y + 10) + 20);
+    Ellipse(hdc, _playerPos.x  - 20, _playerPos.y - 20, _playerPos.x  + 20, _playerPos.y  + 20);
     
     SelectObject(hdc, oldPen); 
     DeleteObject(hPen);
@@ -130,11 +130,6 @@ void cMainGame::Player(HDC hdc)
         playerPos.y -= 5;
         SetplayerPos(playerPos);
     }
-    /*if (isFired)
-    {
-        playerPos.y -= 5;
-        SetplayerPos(playerPos);
-    }*/
 }
 
 HDC hMemDC, hMemDC1, hMemDC2, hMemDC3, hMemDC4;
@@ -257,12 +252,14 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             bx = bitChar.bmWidth;
             by = bitChar.bmHeight;
             //캐릭터
+
+            //Rectangle(hdc, playerPos.x - 16, playerPos.y - 16, playerPos.x + 16, playerPos.y + 16);
+
             if (!isFired)
                 TransparentBlt(DoubleDC, playerPos.x- cameraPos.x -16, playerPos.y - cameraPos.y-32, bx, by, hMemDC2, 0 , 0 , bx, by, RGB(47, 75, 63));
             else
                 TransparentBlt(DoubleDC, playerPos.x - bulletcameraPos.x- 16 , playerPos.y- bulletcameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
             
-
             DeleteDC(hMemDC2);
         }
         if (isFired)
@@ -272,8 +269,10 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
 
             bx = bitBM.bmWidth;
             by = bitBM.bmHeight;
-           
-            TransparentBlt(DoubleDC, result.x - bulletcameraPos.x, result.y - bulletcameraPos.y, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
+            
+            Draw(hWnd, hdc, result);
+
+            TransparentBlt(DoubleDC, result.x - bulletcameraPos.x, result.y - bulletcameraPos.y , bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
 
             DeleteDC(hMemDC3);
         }
@@ -285,7 +284,6 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             by = bitUI.bmHeight;
             TransparentBlt(DoubleDC, 0, rectView.bottom-159, bx, by, hMemDC4, 0, 0, bx, by, RGB(47, 75, 63));
             
-
             DeleteDC(hMemDC4);
         }
         Player(hMemDC1);
@@ -322,37 +320,21 @@ Vector2 cMainGame::BM(HWND hWnd, HDC hdc, Vector2 _BMPos, double t, double _powe
     bulletPosx = (_powerGauge / 10) * t * _BMPos.x;
     bulletPosy = (-1) * ((_powerGauge / 10) * t * _BMPos.y - (0.5 * g * t * t));
 
-    Draw(hWnd, hdc, Vector2(bulletPosx + playerPos.x, bulletPosy + playerPos.y - 16));
-
     return Vector2(bulletPosx + playerPos.x, bulletPosy + playerPos.y-16);
 }
 
 void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _playerPos) // 그리기
 {
-    //hBrush = CreateSolidBrush(RGB(47, 75, 63));
-    //oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
-    //hPen = CreatePen(PS_SOLID, 1, RGB(47, 75, 63));
-    //oldPen = (HPEN)SelectObject(hdc, hPen);
-    // 
-    //Ellipse(hdc, _playerPos.x - 10, _playerPos.y - 10, _playerPos.x + 10, _playerPos.y + 10);
-
     COLORREF pixelColor = GetPixel(hMemDC1, _playerPos.x, _playerPos.y);
     COLORREF flyColor = RGB(47, 75, 63);
-    if (pixelColor != flyColor)
+    COLORREF flyColor2 = RGB(255, 255, 255);
+    if (pixelColor != flyColor || pixelColor != flyColor2)
     {
-        Boom(hMemDC1, _playerPos);
+        Boom(hMemDC1, _playerPos);      
         isFired = false;
         t = 0;
     }
-    /*SelectObject(hdc, oldPen);
-    DeleteObject(hPen);
-    SelectObject(hdc, oldBrush);
-    DeleteObject(hBrush);*/
 }
-
-/*
-
-*/
 
 void cMainGame::SetplayerPos(Vector2 _playerPos)
 {
