@@ -327,8 +327,8 @@ void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _playerPos) // 그리기
 {
     COLORREF pixelColor = GetPixel(hMemDC1, _playerPos.x, _playerPos.y);
     COLORREF flyColor = RGB(47, 75, 63);
-    COLORREF flyColor2 = RGB(255, 255, 255);
-    if (pixelColor != flyColor || pixelColor != flyColor2)
+    //COLORREF flyColor2 = RGB(255, 255, 255);
+    if (pixelColor != flyColor)
     {
         Boom(hMemDC1, _playerPos);      
         isFired = false;
