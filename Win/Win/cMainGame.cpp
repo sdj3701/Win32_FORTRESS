@@ -328,8 +328,7 @@ void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _playerPos) // 그리기
     COLORREF pixelColor = GetPixel(hMemDC1, _playerPos.x, _playerPos.y);
     COLORREF flyColor = RGB(47, 75, 63);
 
-    if (pixelColor != flyColor)
-
+    if (_playerPos.y > 0)
     {
         if (pixelColor != flyColor)
         {
