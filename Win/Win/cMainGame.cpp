@@ -141,8 +141,8 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
 {
     int bx, by;
     
-    int wx=rectView.right/2, wy= rectView.bottom/2;
     Vector2 result;
+    static int wx=rectView.right/2, wy= rectView.bottom/2;
     Vector2 bulletcameraPos;
     if (!isFired)
     {
@@ -327,13 +327,17 @@ void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _playerPos) // 그리기
 {
     COLORREF pixelColor = GetPixel(hMemDC1, _playerPos.x, _playerPos.y);
     COLORREF flyColor = RGB(47, 75, 63);
-    //COLORREF flyColor2 = RGB(255, 255, 255);
-    if (pixelColor != flyColor)
+
+    if (_playerPos.y > 0)
     {
-        Boom(hMemDC1, _playerPos);      
-        isFired = false;
-        t = 0;
+        if (pixelColor != flyColor)
+        {
+            Boom(hMemDC1, _playerPos);
+            isFired = false;
+            t = 0;
+        }
     }
+    
 }
 
 void cMainGame::SetplayerPos(Vector2 _playerPos)
