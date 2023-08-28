@@ -87,5 +87,7 @@ public:
 	Vector2& GetBMPos(); // 저장한 함수 사용하기
 	double AngleInRadians(double angle);//각도에 따른 라디안 계산
 	void Draw(HWND hWnd,HDC hdc, Vector2 _playerPos);
+	void Damage(Vector2 _playerPos);
+
 };
 

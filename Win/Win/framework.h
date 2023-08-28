@@ -20,3 +20,9 @@
 #include <vector>
 extern HWND g_hWnd;
 #define PI 3.141592f
+
+#ifdef UNICODE
+#pragma comment(linker,"/entry:wWinMainCRTStartup /subsystem:console")
+#else
+#pragma comment(linker,"/entry:WinMainCRTStartup /subsystem:console")
+#endif

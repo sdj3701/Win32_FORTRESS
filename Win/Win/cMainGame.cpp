@@ -36,9 +36,12 @@ void cMainGame::Boom(HDC hdc, Vector2 _playerPos)
     oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
     hPen = CreatePen(PS_SOLID, 1, RGB(47, 75, 63));
     oldPen = (HPEN)SelectObject(hdc, hPen);
-
+    //playerPos는 플레이어 가운데 위치
+    //여기서 겹치는지 확인
     Ellipse(hdc, _playerPos.x  - 20, _playerPos.y - 20, _playerPos.x  + 20, _playerPos.y  + 20);
     
+    Damage(_playerPos);
+
     SelectObject(hdc, oldPen); 
     DeleteObject(hPen);
     SelectObject(hdc, oldBrush);
@@ -338,6 +341,26 @@ void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _playerPos) // 그리기
         }
     }
     
+}
+
+void cMainGame::Damage(Vector2 _playerPos)
+{
+    double direction = sqrt(pow(playerPos.x - _playerPos.x, 2) + pow(playerPos.y - _playerPos.y, 2));
+
+    double angleRad = atan((_playerPos.x - playerPos.x) / direction);
+    double minDirection = 16 / cos(angleRad);
+
+    if (20 + minDirection > direction)
+    {
+        printf("20");
+        //자신 플레이어 한테 데미지 
+        //추가로 넓이를 구해서 데미지 차별을 주면 좋을 텐데
+    }
+    else
+    {
+        printf("NoDamage");
+    }
+    //적 위치를 추가해서 데미지를 주는 것 추가
 }
 
 void cMainGame::SetplayerPos(Vector2 _playerPos)
