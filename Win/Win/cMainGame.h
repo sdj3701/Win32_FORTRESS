@@ -9,7 +9,7 @@ private:
 	HBRUSH hBrush, oldBrush;
 	HPEN hPen, oldPen;
 	HBITMAP hbackImage;
-	BITMAP bitBack;
+	BITMAP bitBack; 
 	//backgrund
 	HBITMAP hTransparentImage;
 	BITMAP bitTransparent;
