@@ -26,13 +26,15 @@ private:
 
 	HBITMAP hDoubleBufferImage;
 	HDC m_MemDC;
-	
+
 	RECT rectView;
 
 	Vector2 playerPos = { 832,244 };
 	Vector2 BMPos = { 0,0 };
 	Vector2 mousePos = { 0,0 };
 	Vector2 cameraPos = { 0,0 };
+	Vector2 BPPos = { playerPos.x - 16,playerPos.y };
+	Vector2 FPPos = { playerPos.x + 16, playerPos.y };
 
 	double powerGauge = 0;
 	double vec = {35.0};
@@ -78,7 +80,11 @@ public:
 	void SetcameraPos(Vector2 _cameraPos);
 	Vector2& GetcameraPos();
 
+	void SetBPPos(Vector2 _playerPos);
+	Vector2& GetBPPos();
 
+	void SetFPPos(Vector2 _playerPos);
+	Vector2& GetFPPos();
 
 
 
@@ -88,6 +94,7 @@ public:
 	double AngleInRadians(double angle);//각도에 따른 라디안 계산
 	void Draw(HWND hWnd,HDC hdc, Vector2 _playerPos);
 	void Damage(Vector2 _playerPos);
+	void CharAngle(Vector2 _BPPos, Vector2 _FPPos);
 
 };
 

@@ -3,8 +3,8 @@ C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(41,91)
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(41,71): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(41,51): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(41,32): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(129,63): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(129,50): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(128,63): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(128,50): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(228,78): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(228,65): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(230,90): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
@@ -13,12 +13,22 @@ C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(246,87
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(246,74): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(248,99): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(248,80): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(262,97): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(262,67): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(264,111): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(264,73): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(278,77): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(278,47): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(331,69): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(331,55): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(260,97): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(260,67): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(262,111): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(262,73): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(276,77): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(276,47): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(316,69): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(316,55): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(357,68): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(357,55): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(369,68): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(369,55): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(380,12): warning C4477: 'printf' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'double'입니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(380,12): warning C4477: 'printf' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'double'입니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(381,12): warning C4477: 'printf' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'double'입니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(381,12): warning C4477: 'printf' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'double'입니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(382,12): warning C4477: 'printf' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'double'입니다.
+C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Win\cMainGame.cpp(382,12): warning C4477: 'printf' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'double'입니다.
   Win.vcxproj -> C:\Users\ShinDongJu\Documents\GitHub\Win32_FORTRESS\Win\Debug\Win.exe

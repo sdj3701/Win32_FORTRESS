@@ -134,6 +134,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static RECT rectView;
     Vector2& playerPos = game->GetplayerPos();
     Vector2& BMPos = game->GetBMPos();
+    Vector2& FPPos = game->GetFPPos();
+    Vector2& BPPos = game->GetBPPos();
+
     double& vec = game->GetAngle();
     //주소로 보내지 않으면 값을 변경하지 못함
 
@@ -162,7 +165,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (wParam == TIMER_1)
         {
             playerPos.y += 5;//중력
+            FPPos.y += 1;
+            BPPos.y += 1;
             game->SetplayerPos(playerPos);
+            game->SetFPPos(FPPos);
+            game->SetBPPos(BPPos);
             InvalidateRect(hWnd, NULL, FALSE);
         }
     }
@@ -173,14 +180,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (wParam == 'A' || wParam == 'a')
         {
             playerPos.x -= 5;
+            FPPos.x -= 5;
+            BPPos.x -= 5;
             game->SetplayerPos(playerPos);
-
+            game->SetFPPos(FPPos);
+            game->SetBPPos(BPPos);
             InvalidateRect(hWnd, NULL, FALSE);
         }
         if (wParam == 'D' || wParam == 'd')
         {
             playerPos.x += 5;
+            FPPos.x += 5;
+            BPPos.x += 5;
             game->SetplayerPos(playerPos);
+            game->SetFPPos(FPPos);
+            game->SetBPPos(BPPos);
             InvalidateRect(hWnd, NULL, FALSE);
         }
         if (wParam == 'W' || wParam == 'w')

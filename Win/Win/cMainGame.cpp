@@ -125,13 +125,14 @@ void cMainGame::DeleteBitmap()
 
 void cMainGame::Player(HDC hdc)
 {
-    //여기는 색이 같다고 오류가 남
     COLORREF pixelColor = GetPixel(hdc, playerPos.x, playerPos.y);
     COLORREF flyColor = RGB(47, 75, 63);
     if (pixelColor != flyColor)
     {
         playerPos.y -= 5;
+        
         SetplayerPos(playerPos);
+        CharAngle(BPPos, FPPos);
     }
 }
 
@@ -223,7 +224,6 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             bx = bitBack.bmWidth;
             by = bitBack.bmHeight;
 
-            //Ellipse(hMemDC, playerPos.x - 10, playerPos.y - 10, playerPos.x + 10, playerPos.y + 10);
             if(!isFired)
                 BitBlt(DoubleDC, 0, 0, bx, by, hMemDC, cameraPos.x, cameraPos.y, SRCCOPY);
             else
@@ -255,8 +255,6 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             bx = bitChar.bmWidth;
             by = bitChar.bmHeight;
             //캐릭터
-
-            //Rectangle(hdc, playerPos.x - 16, playerPos.y - 16, playerPos.x + 16, playerPos.y + 16);
 
             if (!isFired)
                 TransparentBlt(DoubleDC, playerPos.x- cameraPos.x -16, playerPos.y - cameraPos.y-32, bx, by, hMemDC2, 0 , 0 , bx, by, RGB(47, 75, 63));
@@ -299,19 +297,6 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
     DeleteDC(DoubleDC);
 }
 
-Vector2 cMainGame::SetBMPos(double _vec)
-{
-    BMPos.x = cos(AngleInRadians(_vec));
-    BMPos.y = sin(AngleInRadians(_vec));
-
-    return Vector2(BMPos.x, BMPos.y);
-}
-
-Vector2& cMainGame::GetBMPos()
-{
-    return BMPos;
-}
-
 double cMainGame::AngleInRadians(double angle)
 {
     revec = (angle * 3.141592) / 180.0;
@@ -340,7 +325,6 @@ void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _playerPos) // 그리기
             t = 0;
         }
     }
-    
 }
 
 void cMainGame::Damage(Vector2 _playerPos)
@@ -349,6 +333,8 @@ void cMainGame::Damage(Vector2 _playerPos)
 
     double angleRad = atan((_playerPos.x - playerPos.x) / direction);
     double minDirection = 16 / cos(angleRad);
+
+    
 
     if (20 + minDirection > direction)
     {
@@ -361,6 +347,41 @@ void cMainGame::Damage(Vector2 _playerPos)
         printf("NoDamage");
     }
     //적 위치를 추가해서 데미지를 주는 것 추가
+}
+
+void cMainGame::CharAngle(Vector2 _BPPos, Vector2 _FPPos)
+{
+    int count = 0;
+    while (1)
+    {
+        COLORREF pixelColor = GetPixel(hMemDC1, _BPPos.x, _BPPos.y + count);
+        COLORREF flyColor = RGB(47, 75, 63);
+        if (pixelColor != flyColor)
+        {
+            _BPPos.y -= count;
+            SetBPPos(_BPPos);
+            break;
+        }
+        count++;
+    }
+    count = 0;
+    while (1)
+    {
+        COLORREF pixelColor = GetPixel(hMemDC1, _FPPos.x, _FPPos.y + count);
+        COLORREF flyColor = RGB(47, 75, 63);
+        if (pixelColor != flyColor)
+        {
+            _FPPos.y -= count;
+            SetBPPos(_FPPos);
+            break;
+        }
+        count++;
+    }
+
+    printf("playerPos : %d\t%d\n", playerPos.x,playerPos.y);
+    printf("BPPos : %d\t%d\n", BPPos.x, BPPos.y);
+    printf("FPPos : %d\t%d\n", FPPos.x, FPPos.y);
+
 }
 
 void cMainGame::SetplayerPos(Vector2 _playerPos)
@@ -422,7 +443,6 @@ void cMainGame::SetpowerGauge(double _powerGauge)
 
 double& cMainGame::GetpowerGauge()
 {
-
     return powerGauge;
     // TODO: 여기에 return 문을 삽입합니다.
 }
@@ -449,4 +469,41 @@ Vector2& cMainGame::GetcameraPos()
 {
     return cameraPos;
     // TODO: 여기에 return 문을 삽입합니다.
+}
+
+void cMainGame::SetFPPos(Vector2 _playerPos)
+{
+    FPPos.x = _playerPos.x;
+    FPPos.y = _playerPos.y;
+}
+
+Vector2& cMainGame::GetFPPos()
+{
+    return FPPos;
+    // TODO: 여기에 return 문을 삽입합니다.
+}
+
+void cMainGame::SetBPPos(Vector2 _playerPos)
+{
+    BPPos.x = _playerPos.x;
+    BPPos.y = _playerPos.y;
+}
+
+Vector2& cMainGame::GetBPPos()
+{
+    return BPPos;
+    // TODO: 여기에 return 문을 삽입합니다.
+}
+
+Vector2 cMainGame::SetBMPos(double _vec)
+{
+    BMPos.x = cos(AngleInRadians(_vec));
+    BMPos.y = sin(AngleInRadians(_vec));
+
+    return Vector2(BMPos.x, BMPos.y);
+}
+
+Vector2& cMainGame::GetBMPos()
+{
+    return BMPos;
 }
