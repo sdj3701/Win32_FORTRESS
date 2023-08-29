@@ -23,16 +23,27 @@ private:
 	HBITMAP hUIImage;
 	BITMAP bitUI;
 	//UI
+	HBITMAP hEnemyImage;
+	BITMAP bitEnemy;
+	//Enemy
+	HBITMAP hEnemyBMImage;
+	BITMAP bitEnemyBM;
+	//EnemyBM
 
 	HBITMAP hDoubleBufferImage;
 	HDC m_MemDC;
 
 	RECT rectView;
 
-	Vector2 playerPos = { 832,244 };
+	Vector2 playerPos = { 132,104 };
+	Vector2 EnemyPos = { 732,204 };
+
 	Vector2 BMPos = { 0,0 };
 	Vector2 mousePos = { 0,0 };
+	
 	Vector2 cameraPos = { 0,0 };
+	Vector2 enemycameraPos = { 0,0 };
+
 	Vector2 BPPos = { playerPos.x - 16,playerPos.y };
 	Vector2 FPPos = { playerPos.x + 16, playerPos.y };
 
@@ -40,10 +51,19 @@ private:
 	double vec = {35.0};
 	double revec;
 	double t = 0;
-	const double g = 9.81;
-	bool isFired = false;
 	double bulletPosx;
 	double bulletPosy;
+	double bpAngle;
+	const double g = 9.81;
+
+	bool isFired = false;
+	bool check = false;
+
+	int playerHP = 100;
+	int EnemyHP = 100;
+
+	int turn = 0;
+
 
 public:
 	cMainGame();
@@ -56,8 +76,14 @@ public:
 	void DeleteBitmap();
 	void DrawBitmapDoubleBuffering(HWND hWNd, HDC hdc);
 
+	void SetbpAngle(double _bpAngle);
+	double& GetbpAngle();
+
 	void SetplayerPos(Vector2 _playerPos);
 	Vector2& GetplayerPos();
+
+	void SetEnemyPos(Vector2 _EnemyPos);
+	Vector2& GetEnemyPos();
 
 	void SetrectView(RECT _rectView);
 	RECT GetrectView();
@@ -70,6 +96,9 @@ public:
 
 	void SetFire(bool _isFired);
 	bool& GetFire();
+
+	void SetCheck(bool _check);
+	bool& GetCheck();
 
 	void SetpowerGauge(double _powerGauge);
 	double& GetpowerGauge();
@@ -86,6 +115,8 @@ public:
 	void SetFPPos(Vector2 _playerPos);
 	Vector2& GetFPPos();
 
+	void SetTurn(int _turn);
+	int& GetTurn();
 
 
 	Vector2 BM(HWND hWnd, HDC hdc, Vector2 v, double t, double _powerGauge);//계산된 탄 포물선 방적식을 계산해서 발사하는 함수

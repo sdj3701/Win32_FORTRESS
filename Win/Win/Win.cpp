@@ -133,14 +133,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     //선언을 전역 변수로 선언을 해서 값을 계속 가지고 있음
     static RECT rectView;
     Vector2& playerPos = game->GetplayerPos();
+    Vector2& EnemyPos = game->GetEnemyPos();
+
     Vector2& BMPos = game->GetBMPos();
     Vector2& FPPos = game->GetFPPos();
     Vector2& BPPos = game->GetBPPos();
 
+    int& turn = game->GetTurn();
+
+    double& bpAngle = game->GetbpAngle();
     double& vec = game->GetAngle();
     //주소로 보내지 않으면 값을 변경하지 못함
 
     bool& isFired = game->GetFire();
+    bool& check = game->GetCheck();
+
     double& t = game->GetTime();
     //시간을 점차 줄여야 함
     static DWORD startTime = 0;
@@ -165,62 +172,102 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (wParam == TIMER_1)
         {
             playerPos.y += 5;//중력
-            FPPos.y += 1;
-            BPPos.y += 1;
+            EnemyPos.y += 5;
             game->SetplayerPos(playerPos);
+            game->SetEnemyPos(EnemyPos);
+            
+            FPPos.y += 1;
             game->SetFPPos(FPPos);
-            game->SetBPPos(BPPos);
+
             InvalidateRect(hWnd, NULL, FALSE);
         }
     }
         break;
 
     case WM_KEYDOWN:
-
-        if (wParam == 'A' || wParam == 'a')
+        if (turn == 0)
         {
-            playerPos.x -= 5;
-            FPPos.x -= 5;
-            BPPos.x -= 5;
-            game->SetplayerPos(playerPos);
-            game->SetFPPos(FPPos);
-            game->SetBPPos(BPPos);
-            InvalidateRect(hWnd, NULL, FALSE);
-        }
-        if (wParam == 'D' || wParam == 'd')
-        {
-            playerPos.x += 5;
-            FPPos.x += 5;
-            BPPos.x += 5;
-            game->SetplayerPos(playerPos);
-            game->SetFPPos(FPPos);
-            game->SetBPPos(BPPos);
-            InvalidateRect(hWnd, NULL, FALSE);
-        }
-        if (wParam == 'W' || wParam == 'w')
-        {
-            if (vec == 55)  return vec;
-            else    vec += 1;
-            game->SetAngle(vec);
-            InvalidateRect(hWnd, NULL, FALSE);
-        }
-        if (wParam == 'S' || wParam == 's')
-        {
-            if (vec == 10)  return vec;
-            else    vec -= 1;
-            game->SetAngle(vec);
-            InvalidateRect(hWnd, NULL, FALSE);
-        }
-        if (wParam == VK_SPACE)
-        {
-
-            if (count == 0)
+            if (wParam == 'A' || wParam == 'a')
             {
-                startTime = GetTickCount();
-                count++;
-                //스페이스바를 사용했을 때 시간 측정
+                playerPos.x -= 5;
+                FPPos.x -= 5;
+                check = true;
+                game->SetplayerPos(playerPos);
+                game->SetFPPos(FPPos);
+                game->SetCheck(check);
+                InvalidateRect(hWnd, NULL, FALSE);
             }
-            InvalidateRect(hWnd, NULL, FALSE);
+
+            if (wParam == 'D' || wParam == 'd')
+            {
+                playerPos.x += 5;
+                FPPos.x += 5;
+                check = true;
+                game->SetplayerPos(playerPos);
+                game->SetFPPos(FPPos);
+                game->SetCheck(check);
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+
+            if (wParam == 'W' || wParam == 'w')
+            {
+                if (vec == 45)  return vec;
+                else    vec += 1;
+                game->SetAngle(vec);
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+
+            if (wParam == 'S' || wParam == 's')
+            {
+                if (vec == 20)  return vec;
+                else    vec -= 1;
+                game->SetAngle(vec);
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+            if (wParam == VK_SPACE)
+            {
+
+                if (count == 0)
+                {
+                    startTime = GetTickCount();
+                    count++;
+                    //스페이스바를 사용했을 때 시간 측정
+                }
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+            break;
+        }
+        else
+        {
+            if (wParam == VK_UP) {
+                // 위쪽 방향키가 눌렸을 때의 동작
+            }
+            else if (wParam == VK_DOWN) {
+                // 아래쪽 방향키가 눌렸을 때의 동작
+            }
+            else if (wParam == VK_LEFT) {
+                EnemyPos.x -= 5;
+                game->SetEnemyPos(EnemyPos);
+                InvalidateRect(hWnd, NULL, FALSE);
+                // 왼쪽 방향키가 눌렸을 때의 동작
+            }
+            else if (wParam == VK_RIGHT) {
+                EnemyPos.x += 5;
+                game->SetEnemyPos(EnemyPos);
+                InvalidateRect(hWnd, NULL, FALSE);
+                // 오른쪽 방향키가 눌렸을 때의 동작
+            }
+            if (wParam == VK_LSHIFT)
+            {
+
+                if (count == 0)
+                {
+                    startTime = GetTickCount();
+                    count++;
+                }
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+            break;
         }
         break;
 
@@ -236,7 +283,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 powerGauge += elapsedTime;
                 if (powerGauge > 1500)    powerGauge = 1500;
                 game->SetpowerGauge(powerGauge);
-                game->SetBMPos(vec);
+                game->SetBMPos(bpAngle);
+                isFired = true;
+                game->SetFire(isFired);
+                count = 0;
+                powerGauge = 0;
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+        }
+        if (wParam == VK_LSHIFT)
+        {
+            if (!isFired)
+            {
+                endTime = GetTickCount();
+                //끝나는 시간 측정
+                DWORD elapsedTime = endTime - startTime;
+                //시간 누르는 시간 체크
+                powerGauge += elapsedTime;
+                if (powerGauge > 1500)    powerGauge = 1500;
+                game->SetpowerGauge(powerGauge);
+                game->SetBMPos(bpAngle);
                 isFired = true;
                 game->SetFire(isFired);
                 count = 0;
