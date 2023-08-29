@@ -1,4 +1,6 @@
 ﻿  Win.cpp
-D:\workspace\Win32_FORTRESS\Win\Win\Win.cpp(214,40): warning C4244: 'return': 'double'에서 'LRESULT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\workspace\Win32_FORTRESS\Win\Win\Win.cpp(222,40): warning C4244: 'return': 'double'에서 'LRESULT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Win.vcxproj -> D:\workspace\Win32_FORTRESS\Win\x64\Debug\Win.exe
+C:\work\Win32_FORTRESS\Win\Win\Win.cpp(218,44): warning C4244: 'return': 'double'에서 'LRESULT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\work\Win32_FORTRESS\Win\Win\Win.cpp(226,44): warning C4244: 'return': 'double'에서 'LRESULT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\work\Win32_FORTRESS\Win\Win\Win.cpp(251,45): warning C4244: 'return': 'double'에서 'LRESULT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\work\Win32_FORTRESS\Win\Win\Win.cpp(259,45): warning C4244: 'return': 'double'에서 'LRESULT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Win.vcxproj -> C:\work\Win32_FORTRESS\Win\x64\Debug\Win.exe

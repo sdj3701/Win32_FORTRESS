@@ -49,11 +49,14 @@ private:
 
 	double powerGauge = 0;
 	double vec = {35.0};
+	double Evec = { 35.0 };
 	double revec;
 	double t = 0;
 	double bulletPosx;
 	double bulletPosy;
+
 	double bpAngle;
+	double beAngle;
 	const double g = 9.81;
 
 	bool isFired = false;
@@ -79,6 +82,9 @@ public:
 	void SetbpAngle(double _bpAngle);
 	double& GetbpAngle();
 
+	void SetbeAngle(double _beAngle);
+	double& GetbeAngle();
+
 	void SetplayerPos(Vector2 _playerPos);
 	Vector2& GetplayerPos();
 
@@ -90,6 +96,9 @@ public:
 
 	void SetAngle(double _vec);
 	double& GetAngle();
+
+	void SetEAngle(double _Evec);
+	double& GetEAngle();
 
 	void SetTime(double _t);
 	double& GetTime();

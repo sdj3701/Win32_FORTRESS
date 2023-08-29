@@ -247,7 +247,6 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
                 {
                     isFired = false;
                     turn++;
-
                     t = 0;
                 }
             }
@@ -258,7 +257,6 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
                 {
                     isFired = false;
                     turn++;
-
                     t = 0;
                 }
             }
@@ -333,9 +331,7 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
                 bulletcameraPos.y = 0;
             }
         }
-        
     }
-    
 
     DoubleDC = CreateCompatibleDC(hdc);
     if (hDoubleBufferImage == NULL)
@@ -477,21 +473,18 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             }
         }
         //여기서 터져서 원을 그리면 turn을 증가 시킴 아직 확인을 안함
-
-        if (turn == 0)
         {
             hMemDC4 = CreateCompatibleDC(DoubleDC);
             hOldBitmap4 = (HBITMAP)SelectObject(hMemDC4, hUIImage);
 
             bx = bitUI.bmWidth;
             by = bitUI.bmHeight;
-            TransparentBlt(DoubleDC, 0, rectView.bottom-159, bx, by, hMemDC4, 0, 0, bx, by, RGB(47, 75, 63));
-            
+            TransparentBlt(DoubleDC, 0, rectView.bottom - 159, bx, by, hMemDC4, 0, 0, bx, by, RGB(47, 75, 63));
+
             DeleteDC(hMemDC4);
         }
-        
+
         Player(hMemDC1);
-        
 
         DeleteDC(hMemDC1);
     }
@@ -510,6 +503,17 @@ void cMainGame::SetbpAngle(double _bpAngle)
 double& cMainGame::GetbpAngle()
 {
     return bpAngle;
+    // TODO: 여기에 return 문을 삽입합니다.
+}
+
+void cMainGame::SetbeAngle(double _beAngle)
+{
+    beAngle = _beAngle;
+}
+
+double& cMainGame::GetbeAngle()
+{
+    return beAngle;
     // TODO: 여기에 return 문을 삽입합니다.
 }
 
@@ -668,6 +672,17 @@ void cMainGame::SetAngle(double _vec)
 double& cMainGame::GetAngle()
 {
     return vec;
+}
+
+void cMainGame::SetEAngle(double _Evec)
+{
+    Evec = _Evec;
+}
+
+double& cMainGame::GetEAngle()
+{
+    return Evec;
+    // TODO: 여기에 return 문을 삽입합니다.
 }
 
 void cMainGame::SetTime(double _t)

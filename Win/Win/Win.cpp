@@ -142,8 +142,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     int& turn = game->GetTurn();
 
     double& bpAngle = game->GetbpAngle();
+    double& beAngle = game->GetbeAngle();
     double& vec = game->GetAngle();
     //주소로 보내지 않으면 값을 변경하지 못함
+    double& Evec = game->GetEAngle();
 
     bool& isFired = game->GetFire();
     bool& check = game->GetCheck();
@@ -187,129 +189,156 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_KEYDOWN:
         if (turn == 0)
         {
-            if (wParam == 'A' || wParam == 'a')
+            if (!isFired)
+                //이동 제한 걸기
             {
-                playerPos.x -= 5;
-                FPPos.x -= 5;
-                check = true;
-                game->SetplayerPos(playerPos);
-                game->SetFPPos(FPPos);
-                game->SetCheck(check);
-                InvalidateRect(hWnd, NULL, FALSE);
-            }
-
-            if (wParam == 'D' || wParam == 'd')
-            {
-                playerPos.x += 5;
-                FPPos.x += 5;
-                check = true;
-                game->SetplayerPos(playerPos);
-                game->SetFPPos(FPPos);
-                game->SetCheck(check);
-                InvalidateRect(hWnd, NULL, FALSE);
-            }
-
-            if (wParam == 'W' || wParam == 'w')
-            {
-                if (vec == 45)  return vec;
-                else    vec += 1;
-                game->SetAngle(vec);
-                InvalidateRect(hWnd, NULL, FALSE);
-            }
-
-            if (wParam == 'S' || wParam == 's')
-            {
-                if (vec == 20)  return vec;
-                else    vec -= 1;
-                game->SetAngle(vec);
-                InvalidateRect(hWnd, NULL, FALSE);
-            }
-            if (wParam == VK_SPACE)
-            {
-
-                if (count == 0)
+                if (wParam == 'A' || wParam == 'a')
                 {
-                    startTime = GetTickCount();
-                    count++;
-                    //스페이스바를 사용했을 때 시간 측정
+                    playerPos.x -= 5;
+                    FPPos.x -= 5;
+                    check = true;
+                    game->SetplayerPos(playerPos);
+                    game->SetFPPos(FPPos);
+                    game->SetCheck(check);
+                    InvalidateRect(hWnd, NULL, FALSE);
                 }
-                InvalidateRect(hWnd, NULL, FALSE);
+
+                if (wParam == 'D' || wParam == 'd')
+                {
+                    playerPos.x += 5;
+                    FPPos.x += 5;
+                    check = true;
+                    game->SetplayerPos(playerPos);
+                    game->SetFPPos(FPPos);
+                    game->SetCheck(check);
+                    InvalidateRect(hWnd, NULL, FALSE);
+                }
+
+                if (wParam == 'W' || wParam == 'w')
+                {
+                    if (vec == 45)  return vec;
+                    else    vec += 1;
+                    game->SetAngle(vec);
+                    InvalidateRect(hWnd, NULL, FALSE);
+                }
+
+                if (wParam == 'S' || wParam == 's')
+                {
+                    if (vec == 20)  return vec;
+                    else    vec -= 1;
+                    game->SetAngle(vec);
+                    InvalidateRect(hWnd, NULL, FALSE);
+                }
+                if (wParam == VK_SPACE)
+                {
+
+                    if (count == 0)
+                    {
+                        startTime = GetTickCount();
+                        count++;
+                        //스페이스바를 사용했을 때 시간 측정
+                    }
+                    InvalidateRect(hWnd, NULL, FALSE);
+                }
+                    break;
             }
-            break;
         }
         else
         {
-            if (wParam == VK_UP) {
-                // 위쪽 방향키가 눌렸을 때의 동작
-            }
-            else if (wParam == VK_DOWN) {
-                // 아래쪽 방향키가 눌렸을 때의 동작
-            }
-            else if (wParam == VK_LEFT) {
-                EnemyPos.x -= 5;
-                game->SetEnemyPos(EnemyPos);
-                InvalidateRect(hWnd, NULL, FALSE);
-                // 왼쪽 방향키가 눌렸을 때의 동작
-            }
-            else if (wParam == VK_RIGHT) {
-                EnemyPos.x += 5;
-                game->SetEnemyPos(EnemyPos);
-                InvalidateRect(hWnd, NULL, FALSE);
-                // 오른쪽 방향키가 눌렸을 때의 동작
-            }
-            if (wParam == VK_LSHIFT)
+            if (!isFired)
+                //이동 제한 걸기
             {
-
-                if (count == 0)
+                if (wParam == VK_UP)
                 {
-                    startTime = GetTickCount();
-                    count++;
+                    if (Evec == 45)  return Evec;
+                    else    Evec += 1;
+                    game->SetAngle(Evec);
+                    InvalidateRect(hWnd, NULL, FALSE);
+                    // 위쪽 방향키가 눌렸을 때의 동작
                 }
-                InvalidateRect(hWnd, NULL, FALSE);
+                else if (wParam == VK_DOWN)
+                {
+                    if (Evec == 20)  return Evec;
+                    else    Evec -= 1;
+                    game->SetAngle(Evec);
+                    InvalidateRect(hWnd, NULL, FALSE);
+                    // 아래쪽 방향키가 눌렸을 때의 동작
+                }
+                else if (wParam == VK_LEFT)
+                {
+                    EnemyPos.x -= 5;
+                    game->SetEnemyPos(EnemyPos);
+                    InvalidateRect(hWnd, NULL, FALSE);
+                    // 왼쪽 방향키가 눌렸을 때의 동작
+                }
+                else if (wParam == VK_RIGHT)
+                {
+                    EnemyPos.x += 5;
+                    game->SetEnemyPos(EnemyPos);
+                    InvalidateRect(hWnd, NULL, FALSE);
+                    // 오른쪽 방향키가 눌렸을 때의 동작
+                }
+                if (wParam == 'M' || wParam == 'm')
+                {
+                    if (count == 0)
+                    {
+                        startTime = GetTickCount();
+                        count++;
+                    }
+                    InvalidateRect(hWnd, NULL, FALSE);
+                }
+                break;
             }
-            break;
+            
         }
         break;
 
     case WM_KEYUP:
-        if (wParam == VK_SPACE)
+        if (turn == 0)
         {
-            if (!isFired)
+            if (wParam == VK_SPACE)
             {
-                endTime = GetTickCount();
-                //끝나는 시간 측정
-                DWORD elapsedTime = endTime - startTime;
-                //시간 누르는 시간 체크
-                powerGauge += elapsedTime;
-                if (powerGauge > 1500)    powerGauge = 1500;
-                game->SetpowerGauge(powerGauge);
-                game->SetBMPos(bpAngle);
-                isFired = true;
-                game->SetFire(isFired);
-                count = 0;
-                powerGauge = 0;
-                InvalidateRect(hWnd, NULL, FALSE);
+                if (!isFired)
+                {
+                    endTime = GetTickCount();
+                    //끝나는 시간 측정
+                    DWORD elapsedTime = endTime - startTime;
+                    //시간 누르는 시간 체크
+                    powerGauge += elapsedTime;
+                    if (powerGauge > 1500)    powerGauge = 1500;
+                    game->SetpowerGauge(powerGauge);
+                    game->SetBMPos(bpAngle);
+                    isFired = true;
+                    game->SetFire(isFired);
+                    count = 0;
+                    powerGauge = 0;
+                    InvalidateRect(hWnd, NULL, FALSE);
+                }
             }
         }
-        if (wParam == VK_LSHIFT)
+        else
         {
-            if (!isFired)
+            if (wParam == 'M' || wParam == 'm')
             {
-                endTime = GetTickCount();
-                //끝나는 시간 측정
-                DWORD elapsedTime = endTime - startTime;
-                //시간 누르는 시간 체크
-                powerGauge += elapsedTime;
-                if (powerGauge > 1500)    powerGauge = 1500;
-                game->SetpowerGauge(powerGauge);
-                game->SetBMPos(bpAngle);
-                isFired = true;
-                game->SetFire(isFired);
-                count = 0;
-                powerGauge = 0;
-                InvalidateRect(hWnd, NULL, FALSE);
+                if (!isFired)
+                {
+                    endTime = GetTickCount();
+                    //끝나는 시간 측정
+                    DWORD elapsedTime = endTime - startTime;
+                    //시간 누르는 시간 체크
+                    powerGauge += elapsedTime;
+                    if (powerGauge > 1500)    powerGauge = 1500;
+                    game->SetpowerGauge(powerGauge);
+                    game->SetBMPos(beAngle);
+                    isFired = true;
+                    game->SetFire(isFired);
+                    count = 0;
+                    powerGauge = 0;
+                    InvalidateRect(hWnd, NULL, FALSE);
+                }
             }
         }
+        
         break;
 
     case WM_COMMAND:
