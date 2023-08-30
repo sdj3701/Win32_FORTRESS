@@ -9,7 +9,7 @@ private:
 	HBRUSH hBrush, oldBrush;
 	HPEN hPen, oldPen;
 	HBITMAP hbackImage;
-	BITMAP bitBack; 
+	BITMAP bitBack;
 	//backgrund
 	HBITMAP hTransparentImage;
 	BITMAP bitTransparent;
@@ -36,19 +36,19 @@ private:
 	RECT rectView;
 
 	Vector2 playerPos = { 132,104 };
-	Vector2 EnemyPos = { 732,204 };
+	Vector2 EnemyPos = { 732,184 };
 
 	Vector2 BMPos = { 0,0 };
 	Vector2 mousePos = { 0,0 };
-	
+
 	Vector2 cameraPos = { 0,0 };
 	Vector2 enemycameraPos = { 0,0 };
 
-	Vector2 BPPos = { playerPos.x - 16,playerPos.y };
+	Vector2 FEPos = { EnemyPos.x - 16,EnemyPos.y };
 	Vector2 FPPos = { playerPos.x + 16, playerPos.y };
 
 	double powerGauge = 0;
-	double vec = {35.0};
+	double vec = { 35.0 };
 	double Evec = { 35.0 };
 	double revec;
 	double t = 0;
@@ -118,8 +118,8 @@ public:
 	void SetcameraPos(Vector2 _cameraPos);
 	Vector2& GetcameraPos();
 
-	void SetBPPos(Vector2 _playerPos);
-	Vector2& GetBPPos();
+	void SetFEPos(Vector2 _playerPos);
+	Vector2& GetFEPos();
 
 	void SetFPPos(Vector2 _playerPos);
 	Vector2& GetFPPos();
@@ -132,9 +132,10 @@ public:
 	Vector2 SetBMPos(double _vec); //(BMPos를 각도에 따라 계산 하기 위한 함수)
 	Vector2& GetBMPos(); // 저장한 함수 사용하기
 	double AngleInRadians(double angle);//각도에 따른 라디안 계산
-	void Draw(HWND hWnd,HDC hdc, Vector2 _playerPos);
+	void Draw(HWND hWnd, HDC hdc, Vector2 _playerPos);
 	void Damage(Vector2 _playerPos);
-	void CharAngle(Vector2 _BPPos, Vector2 _FPPos);
+	void CharAngle(Vector2 _playerPos, Vector2 _FPPos);
+	void EnemyAngle(Vector2 _EnemyPos, Vector2 _FEPos);
+	void RotateImage(HDC hdc, HBITMAP hBitmap, int playerPosx,int plaeyrPosy, int dx, int dy, double angle);
 
 };
-

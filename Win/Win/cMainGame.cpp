@@ -1,6 +1,10 @@
 ﻿#include "framework.h"
 #include "cMainGame.h"
 
+using namespace Gdiplus;
+
+ULONG_PTR gdiplusToken;
+
 cMainGame::cMainGame()
 {
     hBrush, oldBrush;
@@ -30,11 +34,13 @@ cMainGame::cMainGame()
     hDoubleBufferImage;
     rectView;
 
+    GdiplusStartupInput gdiplusStartupInput;
+    GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 }
 
 cMainGame::~cMainGame()
 {
-    
+    GdiplusShutdown(gdiplusToken);
 }
 
 void cMainGame::Boom(HDC hdc, Vector2 _playerPos)
@@ -43,13 +49,12 @@ void cMainGame::Boom(HDC hdc, Vector2 _playerPos)
     oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
     hPen = CreatePen(PS_SOLID, 1, RGB(47, 75, 63));
     oldPen = (HPEN)SelectObject(hdc, hPen);
-    //playerPos는 플레이어 가운데 위치
-    //여기서 겹치는지 확인
-    Ellipse(hdc, _playerPos.x  - 20, _playerPos.y - 20, _playerPos.x  + 20, _playerPos.y  + 20);
-    
+
+    Ellipse(hdc, _playerPos.x - 20, _playerPos.y - 20, _playerPos.x + 20, _playerPos.y + 20);
+
     Damage(_playerPos);
 
-    SelectObject(hdc, oldPen); 
+    SelectObject(hdc, oldPen);
     DeleteObject(hPen);
     SelectObject(hdc, oldBrush);
     DeleteObject(hBrush);
@@ -173,22 +178,35 @@ void cMainGame::Player(HDC hdc)
     }
 
     COLORREF pixelColor2 = GetPixel(hdc, FPPos.x, FPPos.y);
-    if (pixelColor2 != flyColor)
+    COLORREF pixelColor3 = GetPixel(hdc, FEPos.x, FEPos.y);
+    if (turn == 0)
     {
-        FPPos.y -= 5;
-        SetFPPos(FPPos);
-        if (check)
+        if (pixelColor2 != flyColor)
         {
-            CharAngle(playerPos, FPPos);
+            FPPos.y -= 5;
+            SetFPPos(FPPos);
+            if (check)
+            {
+                CharAngle(playerPos, FPPos);
+            }
         }
     }
-    
-    //printf("playerPos : %lf\t%lf\n", playerPos.x, playerPos.y);
-    //printf("FPPos : %lf\t%lf\n", FPPos.x, FPPos.y);
-    //printf("playerPos : %lf %lf \t FPPos : %lf %lf\n", playerPos.x, playerPos.y, FPPos.x, FPPos.y);
+    else 
+    {
+        if (pixelColor3 != flyColor)
+        {
+            FEPos.y -= 5;
+            SetFEPos(FEPos);
+            if (check)
+            {
+                EnemyAngle(EnemyPos, FEPos);
+            }
+        }
+    }
+    //check 여기서 확인 함 여기서 버그 생김 앞에 좌표 찾는데 구덩이 들어가면 값이 튐
 }
 
-HDC hMemDC, hMemDC1, hMemDC2, hMemDC3, hMemDC4 ,hMemDCEnemy, hMemDCEnemyBM;
+HDC hMemDC, hMemDC1, hMemDC2, hMemDC3, hMemDC4, hMemDCEnemy, hMemDCEnemyBM;
 HBITMAP hOldBitmap, hOldBitmap1, hOldBitmap2, hOldBitmap3, hOldBitmap4, hOldBitmapEnemy, hOldBitmapEnemyBM;
 HDC DoubleDC;
 HBITMAP hOldDoubleBitmap;
@@ -196,9 +214,9 @@ HBITMAP hOldDoubleBitmap;
 void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
 {
     int bx, by;
-    
+
     Vector2 result, Enemyresult;
-    static int wx=rectView.right/2, wy= rectView.bottom/2;
+    static int wx = rectView.right / 2, wy = rectView.bottom / 2;
     Vector2 bulletcameraPos;
     if (turn == 0)
     {
@@ -362,7 +380,7 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
                 else
                     BitBlt(DoubleDC, 0, 0, bx, by, hMemDC, bulletcameraPos.x, bulletcameraPos.y, SRCCOPY);
             }
-            
+
 
             SelectObject(hMemDC, hOldBitmap);
             DeleteDC(hMemDC);
@@ -372,9 +390,9 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             hOldBitmap1 = (HBITMAP)SelectObject(hMemDC1, hTransparentImage);
 
             bx = rectView.right;
-            by = rectView.bottom ;
+            by = rectView.bottom;
             //화면 크기 
-            
+
             //이미지 크기를 전체 크기를 불러오는 것이 아니라 화면 만금의 크기를 가져와야함
             //661, 543
             if (turn == 0)
@@ -412,7 +430,10 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             if (turn == 0)
             {
                 if (!isFired)
-                    TransparentBlt(DoubleDC, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
+                {
+                    RotateImage(DoubleDC, hcharImage, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, bpAngle);
+                    //TransparentBlt(DoubleDC, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
+                }
                 else
                     TransparentBlt(DoubleDC, playerPos.x - bulletcameraPos.x - 16, playerPos.y - bulletcameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
                 if (!isFired)
@@ -432,7 +453,7 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
                 else
                     TransparentBlt(DoubleDC, EnemyPos.x - bulletcameraPos.x - 17, EnemyPos.y - bulletcameraPos.y - 28, ebx, eby, hMemDCEnemy, 0, 0, ebx, eby, RGB(47, 75, 63));
             }
-            
+
 
             DeleteDC(hMemDC2);
             DeleteDC(hMemDCEnemy);
@@ -488,7 +509,7 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
 
         DeleteDC(hMemDC1);
     }
-    
+
     TransparentBlt(hdc, 0, 0, rectView.right, rectView.bottom, DoubleDC, 0, 0, rectView.right, rectView.bottom, RGB(47, 75, 63));
 
     SelectObject(DoubleDC, hOldDoubleBitmap);
@@ -519,13 +540,13 @@ double& cMainGame::GetbeAngle()
 
 double cMainGame::AngleInRadians(double angle)
 {
-    revec = (angle * 3.141592) / 180.0;
+    revec = (angle * PI) / 180.0;
     return revec;
 }
 
 Vector2 cMainGame::BM(HWND hWnd, HDC hdc, Vector2 _BMPos, double t, double _powerGauge)
 {
-    
+
     if (turn == 0)
     {
         bulletPosx = (_powerGauge / 10) * t * _BMPos.x;
@@ -540,11 +561,11 @@ Vector2 cMainGame::BM(HWND hWnd, HDC hdc, Vector2 _BMPos, double t, double _powe
 
         return Vector2(bulletPosx + EnemyPos.x, bulletPosy + EnemyPos.y - 16);
     }
-        
+
 
 }
 
-void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _playerPos) // 그리기
+void cMainGame::Draw(HWND hWnd, HDC hdc, Vector2 _playerPos) // 그리기
 {
     COLORREF pixelColor = GetPixel(hMemDC1, _playerPos.x, _playerPos.y);
     COLORREF flyColor = RGB(47, 75, 63);
@@ -575,8 +596,8 @@ void cMainGame::Draw(HWND hWnd,HDC hdc, Vector2 _playerPos) // 그리기
 void cMainGame::Damage(Vector2 _playerPos)
 {
     double direction, Edirection;
-    double angleRad,EangleRad;
-    double minDirection,EminDirection;
+    double angleRad, EangleRad;
+    double minDirection, EminDirection;
 
     direction = sqrt(pow(playerPos.x - _playerPos.x, 2) + pow(playerPos.y - _playerPos.y, 2));
 
@@ -615,29 +636,72 @@ void cMainGame::CharAngle(Vector2 _playerPos, Vector2 _FPPos)
 {
     double dx = _FPPos.x - _playerPos.x;
     double dy = _FPPos.y - _playerPos.y;
-    double hypotenuse = sqrt(pow(dx, 2)  + pow(dy, 2));
+    double hypotenuse = sqrt(pow(dx, 2) + pow(dy, 2));
     //빗변 구하기
 
     double angleRad = atan(dy / dx);
     //각도로 변환
 
-    double angleDeg = angleRad * (180.0 / 3.141592);
+    double angleDeg = angleRad * (180.0 / PI);
     //vec에 더하는 도 단위 또는 이미지 회전에 사용하는 도
     //이미지 회전은 이녀석으로
 
     bpAngle = vec + (-1 * angleDeg);
 
     printf("bpAngle : %lf \t vec : %lf \t angleDeg : %lf \t playerPos : %lf %lf \t FPPos : %lf %lf\n \n", bpAngle, vec, angleDeg, playerPos.x, playerPos.y, FPPos.x, FPPos.y);
-
     check = false;
 
+}
+
+void cMainGame::EnemyAngle(Vector2 _EnemyPos, Vector2 _FEPos)
+{
+    double dx = _FEPos.x - _EnemyPos.x;
+    double dy = _FEPos.y - _EnemyPos.y;
+    double hypotenuse = sqrt(pow(dx, 2) + pow(dy, 2));
+    //빗변 구하기
+
+    double angleRad = atan(dy / dx);
+    //각도로 변환
+
+    double angleDeg = angleRad * (180.0 / PI);
+    //vec에 더하는 도 단위 또는 이미지 회전에 사용하는 도
+    //이미지 회전은 이녀석으로
+
+    beAngle = Evec + (-1 * angleDeg);
+
+    printf("beAngle : %lf \t vec : %lf \t angleDeg : %lf \t EnemyPos : %lf %lf \t FEPos : %lf %lf\n \n", beAngle, Evec, angleDeg, EnemyPos.x, EnemyPos.y, FEPos.x, FEPos.y);
+
+    check = false;
+}
+
+void cMainGame::RotateImage(HDC hdc, HBITMAP hBitmap, int playerPosx, int playerPosy, int dx, int dy, double angle)
+{
+    //C++ DrawImage
+    Graphics graphics(hdc);
+    //객체 생성
+    Bitmap bitmap(hBitmap, NULL);
+    //비트맵 로드
+    graphics.TranslateTransform(static_cast<float>(dx), static_cast<float>(dy));
+    //이동 변환
+    graphics.RotateTransform(static_cast<float>(angle));
+    //회전 변환
+    graphics.DrawImage(&bitmap, playerPosx, playerPosy, dx, dy);
+    //int a = 1;
+
+    //Gdiplus::Matrix mat;
+    //mat.RotateAt(angle, Gdiplus::PointF(playerPos.x + (float)(dx / 2), playerPos.y + (float)(dy / 2)));
+    //graphics.SetTransform(&mat);
+    //graphics.DrawImage(&bitmap, playerPosx, playerPosy, dx, dx);
+    ////이미지 그리기
+    //mat.Reset();
+    //graphics.SetTransform(&mat);
 }
 
 void cMainGame::SetplayerPos(Vector2 _playerPos)
 {
     playerPos.x = _playerPos.x;
     playerPos.y = _playerPos.y;
-} 
+}
 Vector2& cMainGame::GetplayerPos()
 {
     return playerPos;
@@ -777,15 +841,15 @@ int& cMainGame::GetTurn()
     // TODO: 여기에 return 문을 삽입합니다.
 }
 
-void cMainGame::SetBPPos(Vector2 _playerPos)
+void cMainGame::SetFEPos(Vector2 _EnemyPos)
 {
-    BPPos.x = _playerPos.x;
-    BPPos.y = _playerPos.y;
+    FEPos.x = _EnemyPos.x;
+    FEPos.y = _EnemyPos.y;
 }
 
-Vector2& cMainGame::GetBPPos()
+Vector2& cMainGame::GetFEPos()
 {
-    return BPPos;
+    return FEPos;
     // TODO: 여기에 return 문을 삽입합니다.
 }
 
