@@ -429,12 +429,14 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             int eby = bitEnemy.bmHeight;
             //적 캐릭터
 
+            
+
             if (turn == 0)
             {
                 if (!isFired)
                 {
-                    //RotateImage(DoubleDC, hcharImage, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, bpAngle);
-                    TransparentBlt(DoubleDC, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
+                    RotateImage(DoubleDC, hcharImage, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, bpAngle);
+                    //TransparentBlt(DoubleDC, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
                 }
                 else
                     TransparentBlt(DoubleDC, playerPos.x - bulletcameraPos.x - 16, playerPos.y - bulletcameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
@@ -455,7 +457,6 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
                 else
                     TransparentBlt(DoubleDC, EnemyPos.x - bulletcameraPos.x - 17, EnemyPos.y - bulletcameraPos.y - 28, ebx, eby, hMemDCEnemy, 0, 0, ebx, eby, RGB(47, 75, 63));
             }
-
 
             DeleteDC(hMemDC2);
             DeleteDC(hMemDCEnemy);
@@ -650,7 +651,7 @@ void cMainGame::CharAngle(Vector2 _playerPos, Vector2 _FPPos)
 
     bpAngle = vec + (-1 * angleDeg);
 
-    //printf("bpAngle : %lf \t vec : %lf \t angleDeg : %lf \t playerPos : %lf %lf \t FPPos : %lf %lf\n \n", bpAngle, vec, angleDeg, playerPos.x, playerPos.y, FPPos.x, FPPos.y);
+    printf("bpAngle : %lf \t vec : %lf \t angleDeg : %lf \t playerPos : %lf %lf \t FPPos : %lf %lf\n \n", bpAngle, vec, angleDeg, playerPos.x, playerPos.y, FPPos.x, FPPos.y);
     check = false;
 
 }
@@ -671,33 +672,36 @@ void cMainGame::EnemyAngle(Vector2 _EnemyPos, Vector2 _FEPos)
 
     beAngle = Evec + (-1 * angleDeg);
 
-    //printf("beAngle : %lf \t vec : %lf \t angleDeg : %lf \t EnemyPos : %lf %lf \t FEPos : %lf %lf\n \n", beAngle, Evec, angleDeg, EnemyPos.x, EnemyPos.y, FEPos.x, FEPos.y);
+    printf("beAngle : %lf \t vec : %lf \t angleDeg : %lf \t EnemyPos : %lf %lf \t FEPos : %lf %lf\n \n", beAngle, Evec, angleDeg, EnemyPos.x, EnemyPos.y, FEPos.x, FEPos.y);
 
     check = false;
 }
 
 void cMainGame::RotateImage(HDC hdc, HBITMAP hBitmap, int playerPosx, int playerPosy, int dx, int dy, double angle)
 {
-    //C++ DrawImage
+
     Graphics graphics(hdc);
-    //객체 생성
-    Bitmap bitmap(hBitmap, NULL);
-    //비트맵 로드
-    graphics.TranslateTransform(static_cast<float>(playerPosx), static_cast<float>(playerPosy));
-    //이동 변환
-    graphics.RotateTransform(static_cast<float>(angle));
-    //회전 변환
-    graphics.DrawImage(&bitmap, playerPosx, playerPosy, dx, dy);
+    Image* pImg = nullptr;
+    pImg = Image::FromFile((WCHAR*)L"image/char06-0003-1.bmp");
+    int xPos = playerPosx;
+    int yPos = playerPosy;
+    if (pImg)
+    {
+        int w = pImg->GetWidth();
+        int h = pImg->GetHeight();
 
-    printf("%lf %lf\n", playerPos.x, playerPos.y);
+        Gdiplus::Matrix mat;
+        mat.RotateAt(angle, Gdiplus::PointF(xPos + (float)(w / 2), yPos ));
+        //돌리는 위치 
+        graphics.SetTransform(&mat);
+        graphics.DrawImage(pImg, xPos, yPos, w, h);
 
-    //Gdiplus::Matrix mat;
-    //mat.RotateAt(angle, Gdiplus::PointF(playerPos.x + (float)(dx / 2), playerPos.y + (float)(dy / 2)));
-    //graphics.SetTransform(&mat);
-    //graphics.DrawImage(&bitmap, playerPosx, playerPosy, dx, dx);
-    ////이미지 그리기
-    //mat.Reset();
-    //graphics.SetTransform(&mat);
+        //이미지가 좌 상단에 잡혀있어서 시계방향으로 돌고 있음
+
+        mat.Reset();
+        graphics.SetTransform(&mat);
+        //이 그림에만 돌리는 reset
+    }
 }
 
 void cMainGame::SetplayerPos(Vector2 _playerPos)

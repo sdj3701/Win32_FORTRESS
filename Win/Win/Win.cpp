@@ -155,7 +155,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static DWORD startTime = 0;
     static DWORD endTime = 0;
     static int count = 0;
-    static int moveGauge = 50;
+    static int moveGauge = 1000;
     static double powerGauge = game->GetpowerGauge();
 
     //캐릭터는 하나 생성하는 클래스 구현S
