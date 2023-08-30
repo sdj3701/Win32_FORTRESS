@@ -178,12 +178,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             EnemyPos.y += 5;
             game->SetplayerPos(playerPos);
             game->SetEnemyPos(EnemyPos);
-
-            FPPos.y += 1;
-            FEPos.y += 1;
-            game->SetFPPos(FPPos);
-            game->SetFEPos(FEPos);
-
+            if (!isFired)
+            {
+                if (turn == 0)
+                {
+                    FPPos.y += 1;
+                    game->SetFPPos(FPPos);
+                }
+                else
+                {
+                    FEPos.y += 1;
+                    game->SetFEPos(FEPos);
+                }
+                //턴이 아닌데 계속 더해줘서 값이 튀는 현상 잡음
+            }
             InvalidateRect(hWnd, NULL, FALSE);
         }
     }
@@ -197,8 +205,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             {
                 if (wParam == 'A' || wParam == 'a')
                 {
-                    playerPos.x -= 5;
-                    FPPos.x -= 5;
+                    if (moveGauge > 0)
+                    {
+                        moveGauge -= 5;
+                        playerPos.x -= 5;
+                        FPPos.x -= 5;
+                    }
                     check = true;
                     game->SetplayerPos(playerPos);
                     game->SetFPPos(FPPos);
@@ -208,8 +220,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
                 if (wParam == 'D' || wParam == 'd')
                 {
-                    playerPos.x += 5;
-                    FPPos.x += 5;
+                    if (moveGauge > 0)
+                    {
+                        moveGauge -= 5;
+                        playerPos.x += 5;
+                        FPPos.x += 5;
+                    }
+                    
                     check = true;
                     game->SetplayerPos(playerPos);
                     game->SetFPPos(FPPos);
@@ -234,7 +251,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 }
                 if (wParam == VK_SPACE)
                 {
-
                     if (count == 0)
                     {
                         startTime = GetTickCount();
@@ -269,8 +285,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 }
                 else if (wParam == VK_LEFT)
                 {
-                    EnemyPos.x -= 5;
-                    FEPos.x -= 5;
+                    if (moveGauge > 0)
+                    {
+                        moveGauge -= 5;
+                        EnemyPos.x -= 5;
+                        FEPos.x -= 5;
+                    }
                     check = true;
                     game->SetEnemyPos(EnemyPos);
                     game->SetFEPos(FEPos);
@@ -280,8 +300,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 }
                 else if (wParam == VK_RIGHT)
                 {
-                    EnemyPos.x += 5;
-                    FEPos.x += 5;
+                    if (moveGauge > 0)
+                    {
+                        moveGauge -= 5;
+                        EnemyPos.x += 5;
+                        FEPos.x += 5;
+                    }
                     check = true;
                     game->SetEnemyPos(EnemyPos);
                     game->SetFEPos(FEPos);
@@ -323,6 +347,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                     game->SetFire(isFired);
                     count = 0;
                     powerGauge = 0;
+                    moveGauge = 50;
                     InvalidateRect(hWnd, NULL, FALSE);
                 }
             }
@@ -345,6 +370,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                     game->SetFire(isFired);
                     count = 0;
                     powerGauge = 0;
+                    moveGauge = 50;
                     InvalidateRect(hWnd, NULL, FALSE);
                 }
             }

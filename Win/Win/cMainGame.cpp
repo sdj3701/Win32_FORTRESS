@@ -183,7 +183,7 @@ void cMainGame::Player(HDC hdc)
     {
         if (pixelColor2 != flyColor)
         {
-            FPPos.y -= 5;
+            FPPos.y -= 1;
             SetFPPos(FPPos);
             if (check)
             {
@@ -195,7 +195,7 @@ void cMainGame::Player(HDC hdc)
     {
         if (pixelColor3 != flyColor)
         {
-            FEPos.y -= 5;
+            FEPos.y -= 1;
             SetFEPos(FEPos);
             if (check)
             {
@@ -203,6 +203,8 @@ void cMainGame::Player(HDC hdc)
             }
         }
     }
+    //printf("%lf\t %lf\n", FPPos.y, FEPos.y);
+
     //check 여기서 확인 함 여기서 버그 생김 앞에 좌표 찾는데 구덩이 들어가면 값이 튐
 }
 
@@ -431,8 +433,8 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             {
                 if (!isFired)
                 {
-                    RotateImage(DoubleDC, hcharImage, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, bpAngle);
-                    //TransparentBlt(DoubleDC, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
+                    //RotateImage(DoubleDC, hcharImage, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, bpAngle);
+                    TransparentBlt(DoubleDC, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
                 }
                 else
                     TransparentBlt(DoubleDC, playerPos.x - bulletcameraPos.x - 16, playerPos.y - bulletcameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
@@ -623,7 +625,7 @@ void cMainGame::Damage(Vector2 _playerPos)
     }
     else
     {
-        printf("NoDamage");
+        printf("NoDamage\n");
     }
     //적 위치를 추가해서 데미지를 주는 것 추가
     if (turn == 0)
@@ -648,7 +650,7 @@ void cMainGame::CharAngle(Vector2 _playerPos, Vector2 _FPPos)
 
     bpAngle = vec + (-1 * angleDeg);
 
-    printf("bpAngle : %lf \t vec : %lf \t angleDeg : %lf \t playerPos : %lf %lf \t FPPos : %lf %lf\n \n", bpAngle, vec, angleDeg, playerPos.x, playerPos.y, FPPos.x, FPPos.y);
+    //printf("bpAngle : %lf \t vec : %lf \t angleDeg : %lf \t playerPos : %lf %lf \t FPPos : %lf %lf\n \n", bpAngle, vec, angleDeg, playerPos.x, playerPos.y, FPPos.x, FPPos.y);
     check = false;
 
 }
@@ -669,7 +671,7 @@ void cMainGame::EnemyAngle(Vector2 _EnemyPos, Vector2 _FEPos)
 
     beAngle = Evec + (-1 * angleDeg);
 
-    printf("beAngle : %lf \t vec : %lf \t angleDeg : %lf \t EnemyPos : %lf %lf \t FEPos : %lf %lf\n \n", beAngle, Evec, angleDeg, EnemyPos.x, EnemyPos.y, FEPos.x, FEPos.y);
+    //printf("beAngle : %lf \t vec : %lf \t angleDeg : %lf \t EnemyPos : %lf %lf \t FEPos : %lf %lf\n \n", beAngle, Evec, angleDeg, EnemyPos.x, EnemyPos.y, FEPos.x, FEPos.y);
 
     check = false;
 }
@@ -681,12 +683,13 @@ void cMainGame::RotateImage(HDC hdc, HBITMAP hBitmap, int playerPosx, int player
     //객체 생성
     Bitmap bitmap(hBitmap, NULL);
     //비트맵 로드
-    graphics.TranslateTransform(static_cast<float>(dx), static_cast<float>(dy));
+    graphics.TranslateTransform(static_cast<float>(playerPosx), static_cast<float>(playerPosy));
     //이동 변환
     graphics.RotateTransform(static_cast<float>(angle));
     //회전 변환
     graphics.DrawImage(&bitmap, playerPosx, playerPosy, dx, dy);
-    //int a = 1;
+
+    printf("%lf %lf\n", playerPos.x, playerPos.y);
 
     //Gdiplus::Matrix mat;
     //mat.RotateAt(angle, Gdiplus::PointF(playerPos.x + (float)(dx / 2), playerPos.y + (float)(dy / 2)));
