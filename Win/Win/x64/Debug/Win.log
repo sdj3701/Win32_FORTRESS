@@ -1,6 +1,50 @@
-﻿  Win.cpp
-C:\work\Win32_FORTRESS\Win\Win\Win.cpp(218,44): warning C4244: 'return': 'double'에서 'LRESULT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\work\Win32_FORTRESS\Win\Win\Win.cpp(226,44): warning C4244: 'return': 'double'에서 'LRESULT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\work\Win32_FORTRESS\Win\Win\Win.cpp(251,45): warning C4244: 'return': 'double'에서 'LRESULT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\work\Win32_FORTRESS\Win\Win\Win.cpp(259,45): warning C4244: 'return': 'double'에서 'LRESULT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Win.vcxproj -> C:\work\Win32_FORTRESS\Win\x64\Debug\Win.exe
+﻿  cMainGame.cpp
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(48,91): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(48,71): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(48,51): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(48,32): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(161,63): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(161,50): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(168,66): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(168,54): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(175,56): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(175,47): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(354,82): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(354,69): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(356,94): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(356,75): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(361,92): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(361,74): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(363,94): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(363,75): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(383,91): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(383,78): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(385,103): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(385,84): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(390,101): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(390,83): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(392,103): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(392,84): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(415,104): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(415,72): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(417,116): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(417,78): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(419,102): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(419,71): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(421,114): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(421,77): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(427,114): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(427,77): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(429,116): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(429,78): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(431,112): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(431,76): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(433,114): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(433,77): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(453,81): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(453,51): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(470,91): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(470,56): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(549,69): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\workspace\Win32_FORTRESS\Win\Win\cMainGame.cpp(549,55): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Win.vcxproj -> D:\workspace\Win32_FORTRESS\Win\x64\Debug\Win.exe

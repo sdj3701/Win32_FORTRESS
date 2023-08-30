@@ -613,17 +613,20 @@ void cMainGame::Damage(Vector2 _playerPos)
 
 void cMainGame::CharAngle(Vector2 _playerPos, Vector2 _FPPos)
 {
-    double hypotenuse = sqrt(pow(_FPPos.x - _playerPos.x, 2) + pow(_FPPos.y - _playerPos.y, 2));
+    double dx = _FPPos.x - _playerPos.x;
+    double dy = _FPPos.y - _playerPos.y;
+    double hypotenuse = sqrt(pow(dx, 2)  + pow(dy, 2));
     //빗변 구하기
 
-    double angleRad = atan((_FPPos.x - _playerPos.x) / hypotenuse);
+    double angleRad = atan(dy / dx);
     //각도로 변환
 
-    double angleDeg = angleRad * 180.0 / 3.141592;
+    double angleDeg = angleRad * (180.0 / 3.141592);
     //vec에 더하는 도 단위 또는 이미지 회전에 사용하는 도
+    //이미지 회전은 이녀석으로
 
-    bpAngle = vec + angleDeg;
-    //계속 더해서 문제가 있나봄
+    bpAngle = vec + (-1 * angleDeg);
+
     printf("bpAngle : %lf \t vec : %lf \t angleDeg : %lf \t playerPos : %lf %lf \t FPPos : %lf %lf\n \n", bpAngle, vec, angleDeg, playerPos.x, playerPos.y, FPPos.x, FPPos.y);
 
     check = false;
