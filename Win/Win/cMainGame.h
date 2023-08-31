@@ -16,15 +16,21 @@ private:
 	//map
 	HBITMAP hcharImage;
 	BITMAP bitChar;
+	HBITMAP hBcharImage;
+	BITMAP bitBChar;
 	//char
 	HBITMAP hBMImage;
 	BITMAP bitBM;
+	HBITMAP hBBMImage;
+	BITMAP bitBBM;
 	//BM
 	HBITMAP hUIImage;
 	BITMAP bitUI;
 	//UI
 	HBITMAP hEnemyImage;
 	BITMAP bitEnemy;
+	HBITMAP hBEnemyImage;
+	BITMAP bitBEnemy;
 	//Enemy
 	HBITMAP hEnemyBMImage;
 	BITMAP bitEnemyBM;
@@ -61,6 +67,8 @@ private:
 
 	bool isFired = false;
 	bool check = false;
+
+	bool moveD = false;
 
 	int playerHP = 100;
 	int EnemyHP = 100;
@@ -108,6 +116,9 @@ public:
 
 	void SetCheck(bool _check);
 	bool& GetCheck();
+
+	void SetmoveD(bool _moveD);
+	bool& GetmoveD();
 
 	void SetpowerGauge(double _powerGauge);
 	double& GetpowerGauge();

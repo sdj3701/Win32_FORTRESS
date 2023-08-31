@@ -150,6 +150,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     bool& isFired = game->GetFire();
     bool& check = game->GetCheck();
 
+    bool& moveD = game->GetmoveD();
+
     double& t = game->GetTime();
     //시간을 점차 줄여야 함
     static DWORD startTime = 0;
@@ -174,8 +176,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         if (wParam == TIMER_1)
         {
-            playerPos.y += 5;//중력
-            EnemyPos.y += 5;
+            playerPos.y += 3;//중력
+            EnemyPos.y += 3;
             game->SetplayerPos(playerPos);
             game->SetEnemyPos(EnemyPos);
             if (!isFired)
@@ -205,6 +207,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             {
                 if (wParam == 'A' || wParam == 'a')
                 {
+                    moveD = false;
+                    //방향 이미지 전환 
                     if (moveGauge > 0)
                     {
                         moveGauge -= 5;
@@ -220,6 +224,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
                 if (wParam == 'D' || wParam == 'd')
                 {
+                    moveD = true;
+                    //방향 이미지 전환
                     if (moveGauge > 0)
                     {
                         moveGauge -= 5;

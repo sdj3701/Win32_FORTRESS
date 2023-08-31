@@ -17,15 +17,21 @@ cMainGame::cMainGame()
     //map
     hcharImage;
     bitChar;
+    hBcharImage;
+    bitBChar;
     //char
     hBMImage;
     bitBM;
+    hBBMImage;
+    bitBBM;
     //BM
     hUIImage;
     bitUI;
     //UI
     hEnemyImage;
     bitEnemy;
+    hBEnemyImage;
+    bitBEnemy;
     //Enemy
     hEnemyBMImage;
     bitEnemyBM;
@@ -101,6 +107,18 @@ void cMainGame::CreateBitmap()
     }
     //char
     {
+        hBcharImage = (HBITMAP)LoadImage(NULL, TEXT("image/char06-0003-0.bmp"),
+            IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+        if (hBcharImage == NULL)
+        {
+            DWORD dwError = GetLastError();
+            MessageBox(NULL, _T("image load Bchar error"), _T("error"), MB_OK);
+            return;
+        }
+        GetObject(hBcharImage, sizeof(BITMAP), &bitBChar);
+    }
+    //Bchar
+    {
         hBMImage = (HBITMAP)LoadImage(NULL, TEXT("image/bullet06-0004.bmp"),
             IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
         if (hBMImage == NULL)
@@ -112,6 +130,18 @@ void cMainGame::CreateBitmap()
         GetObject(hBMImage, sizeof(BITMAP), &bitBM);
     }
     //BM
+    {
+        hBBMImage = (HBITMAP)LoadImage(NULL, TEXT("image/bullet06-0020.bmp"),
+            IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+        if (hBBMImage == NULL)
+        {
+            DWORD dwError = GetLastError();
+            MessageBox(NULL, _T("image load Bbullet error"), _T("error"), MB_OK);
+            return;
+        }
+        GetObject(hBBMImage, sizeof(BITMAP), &bitBBM);
+    }
+    //BBM
     {
         hUIImage = (HBITMAP)LoadImage(NULL, TEXT("image/play__0001.bmp"),
             IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
@@ -137,6 +167,18 @@ void cMainGame::CreateBitmap()
     }
     //Enemy
     {
+        hBEnemyImage = (HBITMAP)LoadImage(NULL, TEXT("image/Enemy/char03-0004-1.bmp"),
+            IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+        if (hBEnemyImage == NULL)
+        {
+            DWORD dwError = GetLastError();
+            MessageBox(NULL, _T("image load Benemychar error"), _T("error"), MB_OK);
+            return;
+        }
+        GetObject(hBEnemyImage, sizeof(BITMAP), &bitBEnemy);
+    }
+    //BEnemy
+    {
         hEnemyBMImage = (HBITMAP)LoadImage(NULL, TEXT("image/Enemy/bullet03-0005.bmp"),
             IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
         if (hEnemyBMImage == NULL)
@@ -155,9 +197,12 @@ void cMainGame::DeleteBitmap()
     DeleteObject(hbackImage);
     DeleteObject(hTransparentImage);
     DeleteObject(hcharImage);
+    DeleteObject(hBcharImage);
     DeleteObject(hBMImage);
+    DeleteObject(hBBMImage);
     DeleteObject(hUIImage);
     DeleteObject(hEnemyImage);
+    DeleteObject(hBEnemyImage);
     DeleteObject(hEnemyBMImage);
 }
 
@@ -167,13 +212,13 @@ void cMainGame::Player(HDC hdc)
     COLORREF flyColor = RGB(47, 75, 63);
     if (pixelColor != flyColor)
     {
-        playerPos.y -= 5;
+        playerPos.y -= 3;
         SetplayerPos(playerPos);
     }
     COLORREF enemypixelColor = GetPixel(hdc, EnemyPos.x, EnemyPos.y);
     if (enemypixelColor != flyColor)
     {
-        EnemyPos.y -= 5;
+        EnemyPos.y -= 3;
         SetEnemyPos(EnemyPos);
     }
 
@@ -208,8 +253,8 @@ void cMainGame::Player(HDC hdc)
     //check 여기서 확인 함 여기서 버그 생김 앞에 좌표 찾는데 구덩이 들어가면 값이 튐
 }
 
-HDC hMemDC, hMemDC1, hMemDC2, hMemDC3, hMemDC4, hMemDCEnemy, hMemDCEnemyBM;
-HBITMAP hOldBitmap, hOldBitmap1, hOldBitmap2, hOldBitmap3, hOldBitmap4, hOldBitmapEnemy, hOldBitmapEnemyBM;
+HDC hMemDC, hMemDC1, hMemDC2,hMemDC2B, hMemDC3, hMemDC3B, hMemDC4, hMemDCEnemy, hMemDCBEnemy, hMemDCEnemyBM;
+HBITMAP hOldBitmap, hOldBitmap1, hOldBitmap2, hOldBitmap2B, hOldBitmap3, hOldBitmap3B, hOldBitmap4, hOldBitmapEnemy, hOldBitmapBEnemy, hOldBitmapEnemyBM;
 HDC DoubleDC;
 HBITMAP hOldDoubleBitmap;
 
@@ -417,9 +462,16 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             hMemDC2 = CreateCompatibleDC(DoubleDC);
             hOldBitmap2 = (HBITMAP)SelectObject(hMemDC2, hcharImage);
             //32/32
+            hMemDC2B = CreateCompatibleDC(DoubleDC);
+            hOldBitmap2B = (HBITMAP)SelectObject(hMemDC2B, hBcharImage);
+            //방향 전환 이미지 
+
             hMemDCEnemy = CreateCompatibleDC(DoubleDC);
-            hOldBitmapEnemyBM = (HBITMAP)SelectObject(hMemDCEnemy, hEnemyImage);
+            hOldBitmapEnemy = (HBITMAP)SelectObject(hMemDCEnemy, hEnemyImage);
             //35/28
+            hMemDCBEnemy = CreateCompatibleDC(DoubleDC);
+            hOldBitmapBEnemy = (HBITMAP)SelectObject(hMemDCBEnemy, hBEnemyImage);
+            //방향 전환 이미지 
 
             bx = bitChar.bmWidth;
             by = bitChar.bmHeight;
@@ -429,22 +481,42 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
             int eby = bitEnemy.bmHeight;
             //적 캐릭터
 
-            
-
             if (turn == 0)
             {
-                if (!isFired)
+                if (moveD)
                 {
-                    RotateImage(DoubleDC, hcharImage, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, bpAngle);
-                    //TransparentBlt(DoubleDC, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
+                    if (!isFired)
+                    {
+                        RotateImage(DoubleDC, hcharImage, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, bpAngle);
+                        //TransparentBlt(DoubleDC, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
+                    }
+                    else
+                        RotateImage(DoubleDC, hcharImage, playerPos.x - bulletcameraPos.x - 16, playerPos.y - bulletcameraPos.y - 32, bx, by, bpAngle);
+
+                        //TransparentBlt(DoubleDC, playerPos.x - bulletcameraPos.x - 16, playerPos.y - bulletcameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
+                    if (!isFired)
+                        TransparentBlt(DoubleDC, EnemyPos.x - cameraPos.x - 17, EnemyPos.y - cameraPos.y - 28, ebx, eby, hMemDCEnemy, 0, 0, ebx, eby, RGB(47, 75, 63));
+                    else
+                        TransparentBlt(DoubleDC, EnemyPos.x - bulletcameraPos.x - 17, EnemyPos.y - bulletcameraPos.y - 28, ebx, eby, hMemDCEnemy, 0, 0, ebx, eby, RGB(47, 75, 63));
+
                 }
                 else
-                    TransparentBlt(DoubleDC, playerPos.x - bulletcameraPos.x - 16, playerPos.y - bulletcameraPos.y - 32, bx, by, hMemDC2, 0, 0, bx, by, RGB(47, 75, 63));
-                if (!isFired)
-                    TransparentBlt(DoubleDC, EnemyPos.x - cameraPos.x - 17, EnemyPos.y - cameraPos.y - 28, ebx, eby, hMemDCEnemy, 0, 0, ebx, eby, RGB(47, 75, 63));
-                else
-                    TransparentBlt(DoubleDC, EnemyPos.x - bulletcameraPos.x - 17, EnemyPos.y - bulletcameraPos.y - 28, ebx, eby, hMemDCEnemy, 0, 0, ebx, eby, RGB(47, 75, 63));
+                {
+                    if (!isFired)
+                    {
+                        RotateImage(DoubleDC, hcharImage, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, bpAngle);
+                        //TransparentBlt(DoubleDC, playerPos.x - cameraPos.x - 16, playerPos.y - cameraPos.y - 32, bx, by, hMemDC2B, 0, 0, bx, by, RGB(47, 75, 63));
+                    }
+                    else
+                        TransparentBlt(DoubleDC, playerPos.x - bulletcameraPos.x - 16, playerPos.y - bulletcameraPos.y - 32, bx, by, hMemDC2B, 0, 0, bx, by, RGB(47, 75, 63));
+                    if (!isFired)
+                        TransparentBlt(DoubleDC, EnemyPos.x - cameraPos.x - 17, EnemyPos.y - cameraPos.y - 28, ebx, eby, hMemDCEnemy, 0, 0, ebx, eby, RGB(47, 75, 63));
+                    else
+                        TransparentBlt(DoubleDC, EnemyPos.x - bulletcameraPos.x - 17, EnemyPos.y - bulletcameraPos.y - 28, ebx, eby, hMemDCEnemy, 0, 0, ebx, eby, RGB(47, 75, 63));
 
+                    //이미지 전환한 출력 자리
+                }
+                
             }
             else
             {
@@ -456,28 +528,51 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
                     TransparentBlt(DoubleDC, EnemyPos.x - enemycameraPos.x - 17, EnemyPos.y - enemycameraPos.y - 28, ebx, eby, hMemDCEnemy, 0, 0, ebx, eby, RGB(47, 75, 63));
                 else
                     TransparentBlt(DoubleDC, EnemyPos.x - bulletcameraPos.x - 17, EnemyPos.y - bulletcameraPos.y - 28, ebx, eby, hMemDCEnemy, 0, 0, ebx, eby, RGB(47, 75, 63));
+                //적 이미지 회전 하는 거 시간 부족으로 인한 중단
             }
 
             DeleteDC(hMemDC2);
+            DeleteDC(hMemDC2B);
             DeleteDC(hMemDCEnemy);
         }
         //캐릭터 까지 그리기는 완료
         if (turn == 0)
         {
-            if (isFired)
+            if (moveD)
             {
-                hMemDC3 = CreateCompatibleDC(DoubleDC);
-                hOldBitmap3 = (HBITMAP)SelectObject(hMemDC3, hBMImage);
+                if (isFired)
+                {
+                    hMemDC3 = CreateCompatibleDC(DoubleDC);
+                    hOldBitmap3 = (HBITMAP)SelectObject(hMemDC3, hBMImage);
 
-                bx = bitBM.bmWidth;
-                by = bitBM.bmHeight;
+                    bx = bitBM.bmWidth;
+                    by = bitBM.bmHeight;
 
-                Draw(hWnd, hdc, result);
+                    Draw(hWnd, hdc, result);
 
-                TransparentBlt(DoubleDC, result.x - bulletcameraPos.x, result.y - bulletcameraPos.y, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
+                    TransparentBlt(DoubleDC, result.x - bulletcameraPos.x, result.y - bulletcameraPos.y, bx, by, hMemDC3, 0, 0, bx, by, RGB(47, 75, 63));
 
-                DeleteDC(hMemDC3);
+                    DeleteDC(hMemDC3);
+                }
             }
+            else
+            {
+                if (isFired)
+                {
+                    hMemDC3B = CreateCompatibleDC(DoubleDC);
+                    hOldBitmap3B = (HBITMAP)SelectObject(hMemDC3B, hBBMImage);
+
+                    bx = bitBM.bmWidth;
+                    by = bitBM.bmHeight;
+
+                    Draw(hWnd, hdc, result);
+
+                    TransparentBlt(DoubleDC, result.x - bulletcameraPos.x, result.y - bulletcameraPos.y, bx, by, hMemDC3B, 0, 0, bx, by, RGB(47, 75, 63));
+
+                    DeleteDC(hMemDC3B);
+                }
+            }
+            
         }
         else
         {
@@ -496,7 +591,7 @@ void cMainGame::DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc)
                 DeleteDC(hMemDCEnemyBM);
             }
         }
-        //여기서 터져서 원을 그리면 turn을 증가 시킴 아직 확인을 안함
+        //전탄 발사
         {
             hMemDC4 = CreateCompatibleDC(DoubleDC);
             hOldBitmap4 = (HBITMAP)SelectObject(hMemDC4, hUIImage);
@@ -552,10 +647,21 @@ Vector2 cMainGame::BM(HWND hWnd, HDC hdc, Vector2 _BMPos, double t, double _powe
 
     if (turn == 0)
     {
-        bulletPosx = (_powerGauge / 10) * t * _BMPos.x;
-        bulletPosy = (-1) * ((_powerGauge / 10) * t * _BMPos.y - (0.5 * g * t * t));
+        if (moveD)
+        {
+            bulletPosx = (_powerGauge / 10) * t * _BMPos.x;
+            bulletPosy = (-1) * ((_powerGauge / 10) * t * _BMPos.y - (0.5 * g * t * t));
 
-        return Vector2(bulletPosx + playerPos.x, bulletPosy + playerPos.y - 16);
+            return Vector2(bulletPosx + playerPos.x, bulletPosy + playerPos.y - 16);
+        }
+        else
+        {
+            bulletPosx = -1 * (_powerGauge / 10) * t * _BMPos.x;
+            bulletPosy = -1 * ((_powerGauge / 10) * t * _BMPos.y - (0.5 * g * t * t));
+
+            return Vector2(bulletPosx + playerPos.x, bulletPosy + playerPos.y - 16);
+        }
+        
     }
     else
     {
@@ -679,29 +785,50 @@ void cMainGame::EnemyAngle(Vector2 _EnemyPos, Vector2 _FEPos)
 
 void cMainGame::RotateImage(HDC hdc, HBITMAP hBitmap, int playerPosx, int playerPosy, int dx, int dy, double angle)
 {
-
     Graphics graphics(hdc);
-    Image* pImg = nullptr;
-    pImg = Image::FromFile((WCHAR*)L"image/char06-0003-1.bmp");
-    int xPos = playerPosx;
-    int yPos = playerPosy;
-    if (pImg)
+    if (moveD)
     {
-        int w = pImg->GetWidth();
-        int h = pImg->GetHeight();
+        Image* pImg = nullptr;
+        pImg = Image::FromFile((WCHAR*)L"image/char06-0003-1.png");
+        if (pImg)
+        {
+            int w = pImg->GetWidth();
+            int h = pImg->GetHeight();
 
-        Gdiplus::Matrix mat;
-        mat.RotateAt(angle, Gdiplus::PointF(xPos + (float)(w / 2), yPos ));
-        //돌리는 위치 
-        graphics.SetTransform(&mat);
-        graphics.DrawImage(pImg, xPos, yPos, w, h);
+            Gdiplus::Matrix mat;
+            mat.RotateAt(angle, Gdiplus::PointF(playerPosx + (float)(w / 2), playerPosy));
+            //돌리는 위치
+            graphics.SetTransform(&mat);
+            graphics.DrawImage(pImg, playerPosx, playerPosy, w, h);
+            //이미지가 좌 상단에 잡혀있어서 시계방향으로 돌고 있음
 
-        //이미지가 좌 상단에 잡혀있어서 시계방향으로 돌고 있음
-
-        mat.Reset();
-        graphics.SetTransform(&mat);
-        //이 그림에만 돌리는 reset
+            mat.Reset();
+            graphics.SetTransform(&mat);
+            //이 그림에만 돌리는 reset
+        }
     }
+    else
+    {
+        Image* pImg = nullptr;
+        pImg = Image::FromFile((WCHAR*)L"image/char06-0003-0.png");
+        if (pImg)
+        {
+            int w = pImg->GetWidth();
+            int h = pImg->GetHeight();
+
+            Gdiplus::Matrix mat;
+            mat.RotateAt(angle, Gdiplus::PointF(playerPosx + (float)(w / 2), playerPosy));
+            //돌리는 위치
+            graphics.SetTransform(&mat);
+            graphics.DrawImage(pImg, playerPosx, playerPosy, w, h);
+            //이미지가 좌 상단에 잡혀있어서 시계방향으로 돌고 있음
+
+            mat.Reset();
+            graphics.SetTransform(&mat);
+            //이 그림에만 돌리는 reset
+        }
+    }
+    
 }
 
 void cMainGame::SetplayerPos(Vector2 _playerPos)
@@ -787,6 +914,17 @@ void cMainGame::SetCheck(bool _check)
 bool& cMainGame::GetCheck()
 {
     return check;
+    // TODO: 여기에 return 문을 삽입합니다.
+}
+
+void cMainGame::SetmoveD(bool _moveD)
+{
+    moveD = _moveD;
+}
+
+bool& cMainGame::GetmoveD()
+{
+    return moveD;
     // TODO: 여기에 return 문을 삽입합니다.
 }
 
